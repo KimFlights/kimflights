@@ -22,6 +22,6 @@ public class AircraftServiceImpl implements AircraftService {
                 aircraft.getManufacturer(),
                 aircraft.getSeatCapacity()
             ))
-            .collect(Collectors.toList());
+            .toList();
     }
 }
