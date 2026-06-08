@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:18.4-alpine'
+    restart: always
+    environment:
+      POSTGRES_DB: 'kimflights'
+      POSTGRES_USER: 'sa'
+      POSTGRES_PASSWORD: 'mysecretpassword'
+    ports:
+      - '5432:5432'
