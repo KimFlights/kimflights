@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Replace this with JPA later
- */
 @Repository
 public interface AircraftRepository extends JpaRepository<Aircraft, String> {
 }
