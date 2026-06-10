@@ -11,8 +11,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class AircraftServiceImpl implements AircraftService {
-    @Autowired
-    private AircraftRepository aircraftRepository;
+    private final AircraftRepository aircraftRepository;
+
+    public AircraftServiceImpl(AircraftRepository aircraftRepository) {
+        this.aircraftRepository = aircraftRepository;
+    }
 
     @Override
     public List<AircraftDTO> findAll() {

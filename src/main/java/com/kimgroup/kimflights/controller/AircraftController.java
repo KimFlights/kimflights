@@ -11,8 +11,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/aircraft")
 public class AircraftController {
-    @Autowired
-    private AircraftService aircraftService;
+    private final AircraftService aircraftService;
+
+    public AircraftController(AircraftService aircraftService) {
+        this.aircraftService = aircraftService;
+    }
 
     @GetMapping
     public List<AircraftDTO> findAll() {
