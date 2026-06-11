@@ -1,17 +1,13 @@
 package com.kimgroup.kimflights.flight;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class FlightDTO {
-    private String id;
-    private LocalDateTime departureDate;
-    private LocalDateTime arrivalDate;
-    private Integer distance;
-    private Integer estimatedTimeInMinutes;
-}
+@Builder
+public record FlightDTO(
+    String id,
+    LocalDateTime departureDate,
+    LocalDateTime arrivalDate,
+    Integer distance,
+    Integer estimatedTimeInMinutes
+) {}

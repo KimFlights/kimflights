@@ -9,6 +9,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -28,8 +29,16 @@ class BookingControllerTest {
 
     @Test
     void shouldReturnAllBookings() throws Exception {
-        BookingDTO booking1 = new BookingDTO("BK-8472", LocalDate.of(2026, 6, 10), true);
-        BookingDTO booking2 = new BookingDTO("BK-9911", LocalDate.of(2026, 6, 12), false);
+        BookingDTO booking1 = BookingDTO.builder()
+                .bookingReference("BK-8472")
+                .reservedDate(LocalDate.of(2026, Month.JUNE, 10))
+                .bookingStatus(true)
+                .build();
+        BookingDTO booking2 = BookingDTO.builder()
+                .bookingReference("BK-9911")
+                .reservedDate(LocalDate.of(2026, Month.JUNE, 12))
+                .bookingStatus(false)
+                .build();
         when(bookingService.findAll()).thenReturn(List.of(booking1, booking2));
 
         mockMvc.perform(get("/booking"))

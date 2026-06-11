@@ -14,11 +14,11 @@ class BookingService {
 
     public List<BookingDTO> findAll() {
         return bookingRepository.findAll().stream()
-            .map(booking -> new BookingDTO(
-                booking.getBookingReference(),
-                booking.getReservedDate(),
-                booking.getBookingStatus()
-            ))
+            .map(booking -> BookingDTO.builder()
+                .bookingReference(booking.getBookingReference())
+                .reservedDate(booking.getReservedDate())
+                .bookingStatus(booking.getBookingStatus())
+                .build())
             .toList();
     }
 }

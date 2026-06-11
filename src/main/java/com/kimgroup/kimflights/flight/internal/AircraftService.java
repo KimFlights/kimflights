@@ -17,15 +17,15 @@ class AircraftService {
 
     public List<AircraftDTO> findAll() {
         return aircraftRepository.findAll().stream()
-            .map(aircraft -> new AircraftDTO(
-                aircraft.getName(),
-                aircraft.getManufacturer(),
-                aircraft.getSeatCapacity()
-            ))
+            .map(aircraft -> AircraftDTO.builder()
+                .name(aircraft.getName())
+                .manufacturer(aircraft.getManufacturer())
+                .seatCapacity(aircraft.getSeatCapacity())
+                .build())
             .toList();
     }
 
     public void assign(String string) {
         eventPublisher.publishEvent(string);
-    };
+    }
 }

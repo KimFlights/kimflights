@@ -1,17 +1,13 @@
 package com.kimgroup.kimflights.flight;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 /**
  * TODO: Update to record with @Builder
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class AircraftDTO {
-    private String name;
-    private String manufacturer;
-    private Integer seatCapacity;
-}
+@Builder
+public record AircraftDTO(
+    String name,
+    String manufacturer,
+    Integer seatCapacity
+) {}

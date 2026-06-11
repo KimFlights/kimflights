@@ -16,13 +16,13 @@ public class TicketService {
 
     public List<TicketDTO> findAll() {
         return ticketRepository.findAll().stream()
-            .map(ticket -> new TicketDTO(
-                ticket.getTicketCode(),
-                ticket.getType(),
-                ticket.getPrice(),
-                ticket.getAvailability(),
-                ticket.getFlightId()
-            ))
+            .map(ticket -> TicketDTO.builder()
+                .ticketCode(ticket.getTicketCode())
+                .type(ticket.getType())
+                .price(ticket.getPrice())
+                .availability(ticket.getAvailability())
+                .flightId(ticket.getFlightId())
+                .build())
             .toList();
     }
 

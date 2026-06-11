@@ -9,5 +9,5 @@ public class ModularityTest {
     @Test
     void verifiesModularStructure() {
         modules.verify();
-    };
+    }
 }

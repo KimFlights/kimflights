@@ -19,13 +19,13 @@ public class FlightService {
 
     public List<FlightDTO> findAll() {
         return flightRepository.findAll().stream()
-            .map(flight -> new FlightDTO(
-                flight.getId(),
-                flight.getDepartureDate(),
-                flight.getArrivalDate(),
-                flight.getDistance(),
-                flight.getEstimatedTimeInMinutes()
-            ))
+            .map(flight -> FlightDTO.builder()
+                .id(flight.getId())
+                .departureDate(flight.getDepartureDate())
+                .arrivalDate(flight.getArrivalDate())
+                .distance(flight.getDistance())
+                .estimatedTimeInMinutes(flight.getEstimatedTimeInMinutes())
+                .build())
             .toList();
     }
 
