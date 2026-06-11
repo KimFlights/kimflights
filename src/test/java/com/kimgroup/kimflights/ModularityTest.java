@@ -7,7 +7,7 @@ public class ModularityTest {
     static ApplicationModules modules = ApplicationModules.of(KimflightsApplication.class);
 
     @Test
-    void verifyModularStructure() {
+    void verifiesModularStructure() {
         modules.verify();
     };
 }
