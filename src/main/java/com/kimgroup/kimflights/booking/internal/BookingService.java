@@ -1,5 +1,6 @@
 package com.kimgroup.kimflights.booking.internal;
 
+import com.kimgroup.kimflights.booking.BookingDTO;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package com.kimgroup.kimflights.booking.internal;
 
+import com.kimgroup.kimflights.booking.BookingDTO;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
