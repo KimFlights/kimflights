@@ -1,12 +1,15 @@
 package com.kimgroup.kimflights.booking.internal;
 
-import com.kimgroup.kimflights.booking.LuggageDTO;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.kimgroup.kimflights.booking.controller.LuggageController;
+import com.kimgroup.kimflights.booking.dto.LuggageDTO;
+import com.kimgroup.kimflights.booking.service.LuggageService;
 
 import java.math.BigDecimal;
 import java.util.List;

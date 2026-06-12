@@ -1,4 +1,4 @@
-package com.kimgroup.kimflights.booking;
+package com.kimgroup.kimflights.booking.model;
 
 public enum TicketStatus {
     AVAILABLE,
