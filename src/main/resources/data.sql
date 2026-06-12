@@ -22,7 +22,9 @@ WITH const AS (
 
         'COMPLETED'::text AS completed,
         'PENDING'::text AS pending,
-        'PROCESSING'::text AS processing
+        'PROCESSING'::text AS processing,
+
+        'FL-123'::text AS flight123
 )
 
 -- ADDRESSES
@@ -143,9 +145,9 @@ INSERT INTO flight (
     origin_airport_code, destination_airport_code
 )
 VALUES
-('FL-123', '2026-06-11 08:00:00', '2026-06-11 10:30:00', 850, 150, 'SCHEDULED', '737 Max', 1, 'JFK', 'LAX'),
+(flight123, '2026-06-11 08:00:00', '2026-06-11 10:30:00', 850, 150, scheduled, '737 Max', 1, 'JFK', 'LAX'),
 ('FL-456', '2026-06-12 14:15:00', '2026-06-12 18:45:00', 1600, 270, 'DELAYED', 'A320neo', 2, 'LAX', 'JFK'),
-('FL-789', '2026-06-15 07:00:00', '2026-06-15 09:20:00', 1180, 140, 'SCHEDULED', '787 Dreamliner', 3, 'ORD', 'JFK'),
+('FL-789', '2026-06-15 07:00:00', '2026-06-15 09:20:00', 1180, 140, scheduled, '787 Dreamliner', 3, 'ORD', 'JFK'),
 ('FL-790', '2026-06-15 13:30:00', '2026-06-15 16:10:00', 1290, 160, 'BOARDING', 'A350-900', 4, 'DFW', 'MIA'),
 ('FL-791', '2026-06-16 18:45:00', '2026-06-16 21:15:00', 1375, 150, 'CANCELLED', 'Embraer E195-E2', 5, 'MIA', 'ORD')
 ON CONFLICT (id) DO NOTHING;
@@ -154,7 +156,7 @@ ON CONFLICT (id) DO NOTHING;
 -- TICKETS
 INSERT INTO ticket (ticket_code, type, price, availability, flight_id)
 VALUES
-('TC-9001', c.economy, 150.00, c.available, 'FL-123'),
+('TC-9001', c.economy, 150.00, c.available, flight123),
 ('TC-9002', c.business, 450.00, c.reserved, 'FL-456'),
 ('TC-9003', c.economy, 180.00, c.available, 'FL-789'),
 ('TC-9004', c.premium_economy, 320.00, c.available, 'FL-790'),
