@@ -8,3 +8,5 @@ INSERT INTO ticket (ticket_code, type, price, availability, flight_id) VALUES ('
 INSERT INTO ticket (ticket_code, type, price, availability, flight_id) VALUES ('TC-9002', 'Business', 450.00, 'RESERVED', 'FL-456') ON CONFLICT (ticket_code) DO NOTHING;
 INSERT INTO luggage (id, weight, type, price) VALUES (1, 23.00, 'Checked Bag', 50.0) ON CONFLICT (id) DO NOTHING;
 INSERT INTO luggage (id, weight, type, price) VALUES (2, 8.50, 'Cabin Bag', 0.0) ON CONFLICT (id) DO NOTHING;
+INSERT INTO airport (id, code, name) VALUES (1, 'JFK', 'John F. Kennedy International Airport') ON CONFLICT (id) DO NOTHING;
+INSERT INTO airport (id, code, name) VALUES (2, 'LAX', 'Los Angeles International Airport') ON CONFLICT (id) DO NOTHING;
