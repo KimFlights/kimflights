@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/booking")
@@ -35,7 +36,7 @@ public class BookingController {
 
     // CREATE
     @PostMapping
-    public BookingDTO create(@RequestBody BookingDTO dto) {
+    public BookingDTO create(@Valid @RequestBody BookingDTO dto) {
         return bookingService.createBooking(dto);
     }
 
@@ -43,7 +44,7 @@ public class BookingController {
     @PutMapping("/{id}")
     public BookingDTO update(
             @PathVariable String id,
-            @RequestBody BookingDTO dto
+            @Valid @RequestBody BookingDTO dto
     ) {
         return bookingService.updateBooking(id, dto);
     }

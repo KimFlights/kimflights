@@ -6,6 +6,7 @@ import com.kimgroup.kimflights.booking.repository.BookingRepository;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
+import com.kimgroup.kimflights.booking.exception.BookingNotFoundException;
 
 @Service
 public class BookingService {
@@ -29,7 +30,7 @@ public class BookingService {
     // ------------------ READ BY ID ------------------
     public BookingDTO findById(String id) {
         Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found: " + id));
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found: " + id));
 
         return mapToDTO(booking);
     }
@@ -49,7 +50,7 @@ public class BookingService {
     // ------------------ UPDATE ------------------
     public BookingDTO updateBooking(String id, BookingDTO dto) {
         Booking existing = bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found: " + id));
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found: " + id));
 
         existing.setReservedDate(dto.reservedDate());
         existing.setBookingStatus(dto.bookingStatus());
@@ -61,7 +62,7 @@ public class BookingService {
     // ------------------ DELETE ------------------
     public void deleteBooking(String id) {
         if (!bookingRepository.existsById(id)) {
-            throw new RuntimeException("Booking not found: " + id);
+            throw new BookingNotFoundException("Booking not found: " + id);
         }
         bookingRepository.deleteById(id);
     }
