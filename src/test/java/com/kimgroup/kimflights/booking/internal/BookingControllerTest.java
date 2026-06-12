@@ -1,6 +1,9 @@
 package com.kimgroup.kimflights.booking.internal;
 
-import com.kimgroup.kimflights.booking.BookingDTO;
+import com.kimgroup.kimflights.booking.controller.BookingController;
+import com.kimgroup.kimflights.booking.dto.BookingDTO;
+import com.kimgroup.kimflights.booking.service.BookingService;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
