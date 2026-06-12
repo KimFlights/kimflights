@@ -1,18 +1,19 @@
-package com.kimgroup.kimflights.domain;
+package com.kimgroup.kimflights.booking.internal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDate;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Aircraft {
+class Booking {
     @Id
-    private String name;
-    private String manufacturer;
-    private Integer seatCapacity;
+    private String bookingReference;
+    private LocalDate reservedDate;
+    private Boolean bookingStatus;
 }
