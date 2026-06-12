@@ -25,6 +25,7 @@ public class FlightService {
                 .arrivalDate(flight.getArrivalDate())
                 .distance(flight.getDistance())
                 .estimatedTimeInMinutes(flight.getEstimatedTimeInMinutes())
+                .flightStatus(flight.getFlightStatus())
                 .build())
             .toList();
     }

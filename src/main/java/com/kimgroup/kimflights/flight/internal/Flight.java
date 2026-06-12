@@ -1,6 +1,9 @@
 package com.kimgroup.kimflights.flight.internal;
 
+import com.kimgroup.kimflights.flight.FlightStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,4 +21,7 @@ public class Flight {
     private LocalDateTime arrivalDate;
     private Integer distance;
     private Integer estimatedTimeInMinutes;
+    
+    @Enumerated(EnumType.STRING)
+    private FlightStatus flightStatus;
 }
