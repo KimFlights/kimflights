@@ -15,9 +15,8 @@ class AirportService {
     public List<AirportDTO> findAll() {
         return airportRepository.findAll().stream()
             .map(airport -> AirportDTO.builder()
-                .id(airport.getId())
                 .code(airport.getCode())
-                .name(airport.getName())
+                .addressId(airport.getAddressId())
                 .build())
             .toList();
     }

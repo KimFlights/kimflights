@@ -1,4 +1,4 @@
-package com.kimgroup.kimflights.flight.internal;
+package com.kimgroup.kimflights.booking.internal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,8 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Airport {
+public class Address {
     @Id
-    private String code;
-    private String addressId;
+    private String id;
+    private String street;
+    private String city;
+    private String state;
+    private String country;
+    private String postalcode;
 }

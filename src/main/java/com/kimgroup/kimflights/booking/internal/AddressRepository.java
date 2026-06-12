@@ -1,8 +1,8 @@
-package com.kimgroup.kimflights.flight.internal;
+package com.kimgroup.kimflights.booking.internal;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface AirportRepository extends JpaRepository<Airport, String> {
+public interface AddressRepository extends JpaRepository<Address, String> {
 }

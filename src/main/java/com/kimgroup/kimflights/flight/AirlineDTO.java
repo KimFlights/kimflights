@@ -3,7 +3,8 @@ package com.kimgroup.kimflights.flight;
 import lombok.Builder;
 
 @Builder
-public record AirportDTO(
+public record AirlineDTO(
+    Integer id,
     String code,
-    String addressId
+    String name
 ) {}
