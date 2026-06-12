@@ -1,12 +1,7 @@
 package com.kimgroup.kimflights.flight.internal;
 
 import com.kimgroup.kimflights.flight.FlightStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,19 +23,19 @@ public class Flight {
     @Enumerated(EnumType.STRING)
     private FlightStatus flightStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aircraft_name")
     private Aircraft aircraft;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "airline_id", nullable = false)
     private Airline airline;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "origin_airport_code", nullable = false)
     private Airport origin;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "destination_airport_code", nullable = false)
     private Airport destination;
 
