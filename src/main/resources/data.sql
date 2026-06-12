@@ -10,3 +10,5 @@ INSERT INTO luggage (id, weight, type, price) VALUES (1, 23.00, 'Checked Bag', 5
 INSERT INTO luggage (id, weight, type, price) VALUES (2, 8.50, 'Cabin Bag', 0.0) ON CONFLICT (id) DO NOTHING;
 INSERT INTO airport (id, code, name) VALUES (1, 'JFK', 'John F. Kennedy International Airport') ON CONFLICT (id) DO NOTHING;
 INSERT INTO airport (id, code, name) VALUES (2, 'LAX', 'Los Angeles International Airport') ON CONFLICT (id) DO NOTHING;
+INSERT INTO passenger (id, name, passport_number) VALUES ('PA-001', 'John Doe', 'US123456789') ON CONFLICT (id) DO NOTHING;
+INSERT INTO passenger (id, name, passport_number) VALUES ('PA-002', 'Jane Smith', 'UK987654321') ON CONFLICT (id) DO NOTHING;
