@@ -16,3 +16,7 @@ INSERT INTO address (id, street, city, state, country, postalcode) VALUES ('AD-0
 INSERT INTO address (id, street, city, state, country, postalcode) VALUES ('AD-002', '456 Elm St', 'Los Angeles', 'CA', 'USA', '90001') ON CONFLICT (id) DO NOTHING;
 INSERT INTO airport (code, address_id) VALUES ('JFK', 'AD-001') ON CONFLICT (code) DO NOTHING;
 INSERT INTO airport (code, address_id) VALUES ('LAX', 'AD-002') ON CONFLICT (code) DO NOTHING;
+INSERT INTO users (id, status, username, password, first_name, last_name) VALUES ('US-001', 'ACTIVE', 'johndoe', 'secret123', 'John', 'Doe') ON CONFLICT (id) DO NOTHING;
+INSERT INTO users (id, status, username, password, first_name, last_name) VALUES ('US-002', 'DISABLED', 'janesmith', 'p@ssword', 'Jane', 'Smith') ON CONFLICT (id) DO NOTHING;
+INSERT INTO invoice (id, cost, created_at, payment_method, status) VALUES (1, 120.50, '2026-06-12 10:15:00', 'Credit Card', 'COMPLETED') ON CONFLICT (id) DO NOTHING;
+INSERT INTO invoice (id, cost, created_at, payment_method, status) VALUES (2, 45.00, '2026-06-12 11:30:00', 'PayPal', 'PENDING') ON CONFLICT (id) DO NOTHING;
