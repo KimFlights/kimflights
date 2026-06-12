@@ -1,8 +1,32 @@
+INSERT INTO address (id, street, city, state, country, postalcode) VALUES ('AD-001', '123 Main St', 'New York', 'NY', 'USA', '10001') ON CONFLICT (id) DO NOTHING;
+INSERT INTO address (id, street, city, state, country, postalcode) VALUES ('AD-002', '456 Elm St', 'Los Angeles', 'CA', 'USA', '90001') ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO airport (code, address_id) VALUES ('JFK', 'AD-001') ON CONFLICT (code) DO NOTHING;
+INSERT INTO airport (code, address_id) VALUES ('LAX', 'AD-002') ON CONFLICT (code) DO NOTHING;
+
 INSERT INTO aircraft (name, manufacturer, seat_capacity) VALUES ('737 Max', 'Boeing', 189) ON CONFLICT (name) DO NOTHING;
 INSERT INTO aircraft (name, manufacturer, seat_capacity) VALUES ('A320neo', 'Airbus', 180) ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO airline (id, code, name) VALUES (1, 'DL', 'Delta Air Lines') ON CONFLICT (id) DO NOTHING;
+INSERT INTO airline (id, code, name) VALUES (2, 'AA', 'American Airlines') ON CONFLICT (id) DO NOTHING;
+
 INSERT INTO booking (booking_reference, reserved_date, booking_status) VALUES ('BK-8472', '2026-06-10', true) ON CONFLICT (booking_reference) DO NOTHING;
 INSERT INTO booking (booking_reference, reserved_date, booking_status) VALUES ('BK-9911', '2026-06-12', false) ON CONFLICT (booking_reference) DO NOTHING;
-INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes) VALUES ('FL-123', '2026-06-11 08:00:00', '2026-06-11 10:30:00', 850, 150) ON CONFLICT (id) DO NOTHING;
-INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes) VALUES ('FL-456', '2026-06-12 14:15:00', '2026-06-12 18:45:00', 1600, 270) ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code) VALUES ('FL-123', '2026-06-11 08:00:00', '2026-06-11 10:30:00', 850, 150, 'SCHEDULED', '737 Max', 1, 'JFK', 'LAX') ON CONFLICT (id) DO NOTHING;
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code) VALUES ('FL-456', '2026-06-12 14:15:00', '2026-06-12 18:45:00', 1600, 270, 'DELAYED', 'A320neo', 2, 'LAX', 'JFK') ON CONFLICT (id) DO NOTHING;
+
 INSERT INTO ticket (ticket_code, type, price, availability, flight_id) VALUES ('TC-9001', 'Economy', 150.00, 'AVAILABLE', 'FL-123') ON CONFLICT (ticket_code) DO NOTHING;
 INSERT INTO ticket (ticket_code, type, price, availability, flight_id) VALUES ('TC-9002', 'Business', 450.00, 'RESERVED', 'FL-456') ON CONFLICT (ticket_code) DO NOTHING;
+
+INSERT INTO luggage (id, weight, type, price) VALUES (1, 23.00, 'Checked Bag', 50.0) ON CONFLICT (id) DO NOTHING;
+INSERT INTO luggage (id, weight, type, price) VALUES (2, 8.50, 'Cabin Bag', 0.0) ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO passenger (id, name, passport_number) VALUES ('PA-001', 'John Doe', 'US123456789') ON CONFLICT (id) DO NOTHING;
+INSERT INTO passenger (id, name, passport_number) VALUES ('PA-002', 'Jane Smith', 'UK987654321') ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO users (id, status, username, password, first_name, last_name) VALUES ('US-001', 'ACTIVE', 'johndoe', 'secret123', 'John', 'Doe') ON CONFLICT (id) DO NOTHING;
+INSERT INTO users (id, status, username, password, first_name, last_name) VALUES ('US-002', 'DISABLED', 'janesmith', 'p@ssword', 'Jane', 'Smith') ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO invoice (id, cost, created_at, payment_method, status) VALUES (1, 120.50, '2026-06-12 10:15:00', 'Credit Card', 'COMPLETED') ON CONFLICT (id) DO NOTHING;
+INSERT INTO invoice (id, cost, created_at, payment_method, status) VALUES (2, 45.00, '2026-06-12 11:30:00', 'PayPal', 'PENDING') ON CONFLICT (id) DO NOTHING;

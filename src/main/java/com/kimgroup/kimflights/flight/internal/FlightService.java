@@ -25,6 +25,11 @@ public class FlightService {
                 .arrivalDate(flight.getArrivalDate())
                 .distance(flight.getDistance())
                 .estimatedTimeInMinutes(flight.getEstimatedTimeInMinutes())
+                .flightStatus(flight.getFlightStatus())
+                .aircraftName(flight.getAircraft().map(Aircraft::getName).orElse(null))
+                .airlineName(flight.getAirline().getName())
+                .originAirportCode(flight.getOrigin().getCode())
+                .destinationAirportCode(flight.getDestination().getCode())
                 .build())
             .toList();
     }
