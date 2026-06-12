@@ -10,5 +10,9 @@ public record FlightDTO(
     LocalDateTime arrivalDate,
     Integer distance,
     Integer estimatedTimeInMinutes,
-    FlightStatus flightStatus
+    FlightStatus flightStatus,
+    String aircraftName,
+    String airlineName,
+    String originAirportCode,
+    String destinationAirportCode
 ) {}
