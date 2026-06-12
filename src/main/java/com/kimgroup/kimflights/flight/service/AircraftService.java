@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-class AircraftService {
+public class AircraftService {
     private final AircraftRepository aircraftRepository;
     private final ApplicationEventPublisher eventPublisher;
 
