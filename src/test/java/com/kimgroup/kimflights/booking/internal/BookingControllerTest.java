@@ -4,7 +4,6 @@ import com.kimgroup.kimflights.booking.controller.BookingController;
 import com.kimgroup.kimflights.booking.dto.BookingDTO;
 import com.kimgroup.kimflights.booking.service.BookingService;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -20,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Disabled("Temporarily disabled")
 @WebMvcTest(BookingController.class)
 class BookingControllerTest {
 
@@ -54,4 +52,26 @@ class BookingControllerTest {
                 .andExpect(jsonPath("$[1].reservedDate").value("2026-06-12"))
                 .andExpect(jsonPath("$[1].bookingStatus").value(false));
     }
+
+    @Test
+        void shouldReturnBookingById() throws Exception {
+
+        BookingDTO booking = BookingDTO.builder()
+                .bookingReference("BK-8472")
+                .reservedDate(LocalDate.of(2026, 6, 10))
+                .bookingStatus(true)
+                .build();
+
+        when(bookingService.findById("BK-8472"))
+                .thenReturn(booking);
+
+        mockMvc.perform(get("/booking/BK-8472"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.bookingReference")
+                        .value("BK-8472"))
+                .andExpect(jsonPath("$.reservedDate")
+                        .value("2026-06-10"))
+                .andExpect(jsonPath("$.bookingStatus")
+                        .value(true));
+        }
 }

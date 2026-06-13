@@ -1,6 +1,5 @@
 package com.kimgroup.kimflights.booking.internal;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -19,7 +18,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Disabled("Temporarily disabled")
 @WebMvcTest(LuggageController.class)
 class LuggageControllerTest {
 
@@ -57,4 +55,25 @@ class LuggageControllerTest {
                 .andExpect(jsonPath("$[1].type").value("Cabin Bag"))
                 .andExpect(jsonPath("$[1].price").value(0.0));
     }
+
+    @Test
+        void shouldReturnLuggageById() throws Exception {
+
+        LuggageDTO luggage = LuggageDTO.builder()
+                .id(1)
+                .weight(new BigDecimal("23.00"))
+                .type("Checked Bag")
+                .price(50.0)
+                .build();
+
+        when(luggageService.findById(1))
+                .thenReturn(luggage);
+
+        mockMvc.perform(get("/luggage/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.weight").value(23.00))
+                .andExpect(jsonPath("$.type").value("Checked Bag"))
+                .andExpect(jsonPath("$.price").value(50.0));
+        }
 }

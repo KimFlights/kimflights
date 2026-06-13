@@ -40,6 +40,21 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 			.body(error);
 	}
+
+	@ExceptionHandler(LuggageNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleLuggageNotFound(
+		LuggageNotFoundException ex) {
+
+	ErrorResponse error = new ErrorResponse(
+		LocalDateTime.now(),
+		HttpStatus.NOT_FOUND.value(),
+		"NOT_FOUND",
+		ex.getMessage()
+	);
+
+	return ResponseEntity.status(HttpStatus.NOT_FOUND)
+		.body(error);
+	}
     /** general methods */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
