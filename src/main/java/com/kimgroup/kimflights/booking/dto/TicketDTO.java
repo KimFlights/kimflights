@@ -5,11 +5,27 @@ import java.math.BigDecimal;
 
 import com.kimgroup.kimflights.booking.TicketStatus;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 @Builder
 public record TicketDTO(
+
+    @NotBlank(message = "Ticket code is required")
     String ticketCode,
+
+    @NotBlank(message = "Ticket type is required")
     String type,
+
+    @NotNull(message = "Price is required")
     BigDecimal price,
+
+    @NotNull(message = "Availability is required")
     TicketStatus availability,
-    String flightId
+
+    @NotBlank(message = "Flight ID is required")
+    String flightId,
+
+    @NotBlank(message = "Booking Reference is required")
+    String bookingReference
 ) {}

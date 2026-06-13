@@ -43,7 +43,8 @@ class LuggageServiceTest {
                 1,
                 new BigDecimal("23.00"),
                 "Checked Bag",
-                50.0
+                50.0,
+                null
         );
 
         luggageDTO = LuggageDTO.builder()
