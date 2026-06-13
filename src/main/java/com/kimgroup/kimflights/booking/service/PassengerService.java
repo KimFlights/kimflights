@@ -1,7 +1,9 @@
 package com.kimgroup.kimflights.booking.service;
 
 import com.kimgroup.kimflights.booking.dto.PassengerDTO;
+import com.kimgroup.kimflights.booking.exception.BookingNotFoundException;
 import com.kimgroup.kimflights.booking.exception.PassengerNotFoundException;
+import com.kimgroup.kimflights.booking.model.Booking;
 import com.kimgroup.kimflights.booking.model.Passenger;
 import com.kimgroup.kimflights.booking.repository.PassengerRepository;
 
@@ -39,11 +41,11 @@ public class PassengerService {
 
     public PassengerDTO createPassenger(PassengerDTO dto) {
 
-        Passenger passenger = new Passenger(
-                dto.id(),
-                dto.name(),
-                dto.passportNumber()
-        );
+        Passenger passenger = new Passenger();
+
+        passenger.setId(dto.id());
+        passenger.setName(dto.name());
+        passenger.setPassportNumber(dto.passportNumber());
 
         Passenger saved = passengerRepository.save(passenger);
 

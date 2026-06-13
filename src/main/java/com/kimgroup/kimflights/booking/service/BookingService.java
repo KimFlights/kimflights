@@ -1,6 +1,7 @@
 package com.kimgroup.kimflights.booking.service;
 
 import com.kimgroup.kimflights.booking.dto.BookingDTO;
+import com.kimgroup.kimflights.booking.dto.BookingSummary;
 import com.kimgroup.kimflights.booking.model.Booking;
 import com.kimgroup.kimflights.booking.repository.BookingRepository;
 
@@ -37,11 +38,11 @@ public class BookingService {
 
     // ------------------ CREATE ------------------
     public BookingDTO createBooking(BookingDTO dto) {
-        Booking booking = new Booking(
-                dto.bookingReference(),
-                dto.reservedDate(),
-                dto.bookingStatus()
-        );
+        Booking booking = new Booking();
+
+        booking.setBookingReference(dto.bookingReference());
+        booking.setReservedDate(dto.reservedDate());
+        booking.setBookingStatus(dto.bookingStatus());
 
         Booking saved = bookingRepository.save(booking);
         return mapToDTO(saved);
@@ -74,6 +75,21 @@ public class BookingService {
                 .reservedDate(booking.getReservedDate())
                 .bookingStatus(booking.getBookingStatus())
                 .build();
+    }
+
+
+    // other functions
+    public BookingSummary getBookingSummary(String bookingReference) {
+
+        Booking booking = bookingRepository.findById(bookingReference)
+                .orElseThrow(() -> new BookingNotFoundException(
+                    "Booking not found: " + bookingReference
+                ));
+
+        return new BookingSummary(
+                booking.getBookingReference(),
+                booking.getTotalPrice()
+        );
     }
 
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,4 +25,8 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus availability;
     private String flightId;
+
+    @ManyToOne
+    @JoinColumn(name = "booking_reference")
+    private Booking booking;
 }

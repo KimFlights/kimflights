@@ -39,9 +39,11 @@ class BookingServiceTest {
     void setUp() {
 
         booking = new Booking(
-                "BK001",
-                LocalDate.of(2026, 6, 10),
-                true
+        "BK001",
+        LocalDate.of(2026, 6, 10),
+        true,
+        null,
+        null
         );
 
         bookingDTO = BookingDTO.builder()
