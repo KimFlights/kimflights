@@ -11,7 +11,6 @@ import com.kimgroup.kimflights.booking.repository.AddressRepository;
 
 @Service
 public class AddressServiceImpl implements AddressService {
-
     private final AddressRepository addressRepository;
 
     public AddressServiceImpl(AddressRepository addressRepository) {
