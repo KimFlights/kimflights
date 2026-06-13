@@ -14,7 +14,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BookingNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleBookingNotFound(
+        public ResponseEntity<ErrorResponse> handleBookingNotFound(
             BookingNotFoundException ex) {
 
         ErrorResponse error = new ErrorResponse(
@@ -26,6 +26,22 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
+
+    @ExceptionHandler(AddressNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleAddressNotFound(
+                AddressNotFoundException ex) {
+
+                ErrorResponse error = new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.NOT_FOUND.value(),
+                        "NOT_FOUND",
+                        ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(error);
+        }
+    /** general methods */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(
@@ -56,3 +72,5 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 }
+
+    
