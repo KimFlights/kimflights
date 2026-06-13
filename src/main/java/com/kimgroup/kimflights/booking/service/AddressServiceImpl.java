@@ -1,16 +1,16 @@
 package com.kimgroup.kimflights.booking.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.kimgroup.kimflights.booking.dto.AddressDTO;
+import com.kimgroup.kimflights.booking.exception.AddressNotFoundException;
 import com.kimgroup.kimflights.booking.model.Address;
 import com.kimgroup.kimflights.booking.repository.AddressRepository;
 
 @Service
-class AddressServiceImpl implements AddressService {
+public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
 
@@ -27,36 +27,29 @@ class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<AddressDTO> findById(String id) {
-        if (id == null) {
-            return Optional.empty();
-        }
+    public AddressDTO findById(String id) {
 
-        return addressRepository.findById(id)
-                .map(this::toDTO);
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() -> new AddressNotFoundException(id));
+
+        return toDTO(address);
     }
 
     @Override
     public AddressDTO create(AddressDTO dto) {
 
-        Address address = new Address(
-                dto.id(),
-                dto.street(),
-                dto.city(),
-                dto.state(),
-                dto.country(),
-                dto.postalcode()
-        );
+        Address address = toEntity(dto);
 
-        return toDTO(addressRepository.save(address));
+        Address saved = addressRepository.save(address);
+
+        return toDTO(saved);
     }
 
     @Override
     public AddressDTO update(String id, AddressDTO dto) {
 
         Address address = addressRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Address not found: " + id));
+                .orElseThrow(() -> new AddressNotFoundException(id));
 
         address.setStreet(dto.street());
         address.setCity(dto.city());
@@ -64,19 +57,22 @@ class AddressServiceImpl implements AddressService {
         address.setCountry(dto.country());
         address.setPostalcode(dto.postalcode());
 
-        return toDTO(addressRepository.save(address));
+        Address updated = addressRepository.save(address);
+
+        return toDTO(updated);
     }
 
     @Override
     public void delete(String id) {
-        if (!addressRepository.existsById(id)) {
-            throw new RuntimeException("Address not found: " + id);
-        }
 
-        addressRepository.deleteById(id);
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() -> new AddressNotFoundException(id));
+
+        addressRepository.delete(address);
     }
 
     private AddressDTO toDTO(Address address) {
+
         return AddressDTO.builder()
                 .id(address.getId())
                 .street(address.getStreet())
@@ -85,5 +81,16 @@ class AddressServiceImpl implements AddressService {
                 .country(address.getCountry())
                 .postalcode(address.getPostalcode())
                 .build();
+    }
+
+    private Address toEntity(AddressDTO dto) {
+        return new Address(
+                dto.id(),
+                dto.street(),
+                dto.city(),
+                dto.state(),
+                dto.country(),
+                dto.postalcode()
+        );
     }
 }
