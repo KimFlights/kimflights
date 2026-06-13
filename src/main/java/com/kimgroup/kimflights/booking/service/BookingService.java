@@ -30,7 +30,7 @@ public class BookingService {
     // ------------------ READ BY ID ------------------
     public BookingDTO findById(String id) {
         Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new BookingNotFoundException("Booking not found: " + id));
+                .orElseThrow(() -> new BookingNotFoundException(id));
 
         return mapToDTO(booking);
     }
