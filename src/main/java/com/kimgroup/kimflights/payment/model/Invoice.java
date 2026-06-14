@@ -1,4 +1,4 @@
-package com.kimgroup.kimflights.payment.models;
+package com.kimgroup.kimflights.payment.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,6 +20,7 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String bookingId;
 
     private LocalDateTime createdAt;
     private BigDecimal cost;

@@ -1,4 +1,4 @@
-package com.kimgroup.kimflights.payment.models;
+package com.kimgroup.kimflights.payment.model;
 
 public enum InvoiceStatus {
     PENDING,
