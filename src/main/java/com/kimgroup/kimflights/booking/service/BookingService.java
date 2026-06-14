@@ -1,11 +1,7 @@
 package com.kimgroup.kimflights.booking.service;
 
 import com.kimgroup.kimflights.booking.model.BookingStatus;
-import com.kimgroup.kimflights.booking.dto.BookingDTO;
-import com.kimgroup.kimflights.booking.model.Booking;
-import com.kimgroup.kimflights.booking.model.Luggage;
-import com.kimgroup.kimflights.booking.model.Passenger;
-import com.kimgroup.kimflights.booking.model.Ticket;
+
 /*
 booking
 │
@@ -34,37 +30,37 @@ booking
     └── BookingController
  */
 
+import com.kimgroup.kimflights.booking.dto.*;
+import com.kimgroup.kimflights.booking.dto.request.*;
+import com.kimgroup.kimflights.booking.dto.response.BookingResponse;
+
 import java.util.List;
 
 public interface BookingService {
 
-    Booking createBooking(Booking booking);
+    // CREATE
+    BookingResponse createBooking(CreateBookingRequest request);
 
-    Booking getBooking(String bookingReference);
+    // READ
+    BookingResponse getBooking(String bookingReference);
 
-    List<Booking> getAllBookings();
+    List<BookingSummary> getAllBookings();
 
-    Booking updateBookingStatus(
-            String bookingReference,
-            BookingStatus status
-    );
+    // STATUS
+    BookingResponse updateBookingStatus(String bookingReference, BookingStatus status);
 
     void cancelBooking(String bookingReference);
 
-    Passenger addPassenger(
-            String bookingReference,
-            Passenger passenger
-    );
+    // PASSENGER OPERATIONS
+    PassengerDTO addPassenger(String bookingReference, AddPassengerRequest request);
 
-    void removePassenger(
-            String bookingReference,
-            String passengerId
-    );
+    void removePassenger(String bookingReference, String passengerId);
 
-    Ticket addTicket(
+    // TICKET OPERATIONS
+    TicketDTO addTicket(
             String bookingReference,
             String passengerId,
-            Ticket ticket
+            AddTicketRequest request
     );
 
     void removeTicket(
@@ -73,10 +69,11 @@ public interface BookingService {
             String ticketCode
     );
 
-    Luggage addLuggage(
+    // LUGGAGE OPERATIONS
+    LuggageDTO addLuggage(
             String bookingReference,
             String passengerId,
-            Luggage luggage
+            AddLuggageRequest request
     );
 
     void removeLuggage(
@@ -84,7 +81,4 @@ public interface BookingService {
             String passengerId,
             Integer luggageId
     );
-
-
-    BookingDTO findByBookingReference(String bookingReference);
 }
