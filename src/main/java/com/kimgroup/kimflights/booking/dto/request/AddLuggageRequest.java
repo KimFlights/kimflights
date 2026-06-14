@@ -1,4 +1,4 @@
-package com.kimgroup.kimflights.booking.dto;
+package com.kimgroup.kimflights.booking.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,9 +7,8 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record LuggageDTO(
-    Integer id,
-    
+public record AddLuggageRequest(
+
     @NotNull(message = "Weight is required")
     BigDecimal weight,
 

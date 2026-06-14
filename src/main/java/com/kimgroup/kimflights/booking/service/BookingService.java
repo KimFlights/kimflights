@@ -1,95 +1,90 @@
 package com.kimgroup.kimflights.booking.service;
 
+import com.kimgroup.kimflights.booking.model.BookingStatus;
 import com.kimgroup.kimflights.booking.dto.BookingDTO;
-import com.kimgroup.kimflights.booking.dto.BookingSummary;
 import com.kimgroup.kimflights.booking.model.Booking;
-import com.kimgroup.kimflights.booking.repository.BookingRepository;
+import com.kimgroup.kimflights.booking.model.Luggage;
+import com.kimgroup.kimflights.booking.model.Passenger;
+import com.kimgroup.kimflights.booking.model.Ticket;
+/*
+booking
+│
+├── model
+│   ├── Booking
+│   ├── BookingStatus
+│   ├── Passenger
+│   ├── Ticket
+│   ├── TicketStatus
+│   ├── Luggage
+│   └── Address
+│
+├── repository
+│   ├── BookingRepository
+│   ├── PassengerRepository
+│   └── TicketRepository
+│
+├── service
+│   ├── BookingService       (public API)
+│   ├── PassengerManager     (package-private)
+│   ├── TicketManager        (package-private)
+│   ├── PricingService       (package-private)
+│   └── ValidationService    (package-private)
+│
+└── web
+    └── BookingController
+ */
 
-import org.springframework.stereotype.Service;
 import java.util.List;
-import com.kimgroup.kimflights.booking.exception.BookingNotFoundException;
 
-@Service
-public class BookingService {
-    private final BookingRepository bookingRepository;
+public interface BookingService {
 
-    public BookingService(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
+    Booking createBooking(Booking booking);
 
-    public List<BookingDTO> findAll() {
-        return bookingRepository.findAll().stream()
-            .map(booking -> BookingDTO.builder()
-                .bookingReference(booking.getBookingReference())
-                .reservedDate(booking.getReservedDate())
-                .bookingStatus(booking.getBookingStatus())
-                .build())
-            .toList();
-    }
+    Booking getBooking(String bookingReference);
 
-    //add crud operations
-    // ------------------ READ BY ID ------------------
-    public BookingDTO findById(String id) {
-        Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new BookingNotFoundException(id));
+    List<Booking> getAllBookings();
 
-        return mapToDTO(booking);
-    }
+    Booking updateBookingStatus(
+            String bookingReference,
+            BookingStatus status
+    );
 
-    // ------------------ CREATE ------------------
-    public BookingDTO createBooking(BookingDTO dto) {
-        Booking booking = new Booking();
+    void cancelBooking(String bookingReference);
 
-        booking.setBookingReference(dto.bookingReference());
-        booking.setReservedDate(dto.reservedDate());
-        booking.setBookingStatus(dto.bookingStatus());
+    Passenger addPassenger(
+            String bookingReference,
+            Passenger passenger
+    );
 
-        Booking saved = bookingRepository.save(booking);
-        return mapToDTO(saved);
-    }
+    void removePassenger(
+            String bookingReference,
+            String passengerId
+    );
 
-    // ------------------ UPDATE ------------------
-    public BookingDTO updateBooking(String id, BookingDTO dto) {
-        Booking existing = bookingRepository.findById(id)
-                .orElseThrow(() -> new BookingNotFoundException("Booking not found: " + id));
+    Ticket addTicket(
+            String bookingReference,
+            String passengerId,
+            Ticket ticket
+    );
 
-        existing.setReservedDate(dto.reservedDate());
-        existing.setBookingStatus(dto.bookingStatus());
+    void removeTicket(
+            String bookingReference,
+            String passengerId,
+            String ticketCode
+    );
 
-        Booking updated = bookingRepository.save(existing);
-        return mapToDTO(updated);
-    }
+    Luggage addLuggage(
+            String bookingReference,
+            String passengerId,
+            Luggage luggage
+    );
 
-    // ------------------ DELETE ------------------
-    public void deleteBooking(String id) {
-        if (!bookingRepository.existsById(id)) {
-            throw new BookingNotFoundException("Booking not found: " + id);
-        }
-        bookingRepository.deleteById(id);
-    }
-
-    // ------------------ MAPPER ------------------
-    private BookingDTO mapToDTO(Booking booking) {
-        return BookingDTO.builder()
-                .bookingReference(booking.getBookingReference())
-                .reservedDate(booking.getReservedDate())
-                .bookingStatus(booking.getBookingStatus())
-                .build();
-    }
+    void removeLuggage(
+            String bookingReference,
+            String passengerId,
+            Integer luggageId
+    );
 
 
-    // other functions
-    public BookingSummary getBookingSummary(String bookingReference) {
-
-        Booking booking = bookingRepository.findById(bookingReference)
-                .orElseThrow(() -> new BookingNotFoundException(
-                    "Booking not found: " + bookingReference
-                ));
-
-        return new BookingSummary(
-                booking.getBookingReference(),
-                booking.getTotalPrice()
-        );
-    }
-
+    BookingDTO findByBookingReference(String bookingReference);
 }

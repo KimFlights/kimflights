@@ -1,15 +1,13 @@
-package com.kimgroup.kimflights.booking.dto;
+package com.kimgroup.kimflights.booking.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-
 import java.math.BigDecimal;
-
 import com.kimgroup.kimflights.booking.TicketStatus;
 
 @Builder
-public record TicketDTO(
+public record AddTicketRequest(
 
     @NotBlank(message = "Ticket code is required")
     String ticketCode,
