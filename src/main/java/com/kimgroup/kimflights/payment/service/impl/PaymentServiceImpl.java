@@ -15,15 +15,15 @@ import com.kimgroup.kimflights.payment.mapper.TransactionMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
     private final TransactionRepository transactionRepository;
     private final InvoiceRepository invoiceRepository;
     private final TransactionMapper transactionMapper;
-    private final Random random = new Random();
+    private final SecureRandom random = new SecureRandom();
 
     public PaymentServiceImpl(TransactionRepository transactionRepository, InvoiceRepository invoiceRepository, TransactionMapper transactionMapper) {
         this.transactionRepository = transactionRepository;

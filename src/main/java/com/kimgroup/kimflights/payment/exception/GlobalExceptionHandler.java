@@ -13,23 +13,9 @@ import java.util.Map;
 @RestControllerAdvice(basePackages = "com.kimgroup.kimflights.payment")
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(TransactionNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleTransactionNotFound(
-            TransactionNotFoundException ex) {
-
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                "NOT_FOUND",
-                ex.getMessage()
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(InvoiceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleInvoiceNotFound(
-            InvoiceNotFoundException ex) {
+    @ExceptionHandler({TransactionNotFoundException.class, InvoiceNotFoundException.class})
+    public ResponseEntity<ErrorResponse> handleNotFoundExceptions(
+            RuntimeException ex) {
 
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
