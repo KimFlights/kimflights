@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice(basePackages = "com.kimgroup.kimflights.payment")
-public class GlobalExceptionHandler {
+public class PaymentExceptionHandler {
 
     @ExceptionHandler({TransactionNotFoundException.class, InvoiceNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFoundExceptions(
