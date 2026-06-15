@@ -1,5 +1,6 @@
 package com.kimgroup.kimflights.booking.service;
 
+import com.kimgroup.kimflights.booking.TicketStatus;
 import com.kimgroup.kimflights.booking.model.*;
 
 import org.springframework.stereotype.Service;

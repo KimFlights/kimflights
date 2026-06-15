@@ -1,6 +1,5 @@
 package com.kimgroup.kimflights.booking.model;
 
-import com.kimgroup.kimflights.booking.TicketStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+
+import com.kimgroup.kimflights.booking.TicketStatus;
 
 @Entity
 @Getter

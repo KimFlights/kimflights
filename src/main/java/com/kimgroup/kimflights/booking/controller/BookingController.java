@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import java.util.List;
 
@@ -19,6 +20,11 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
+    
+    @PostConstruct
+    public void init() {
+        System.out.println("BookingController loaded!");
+    }
 
     // ---------------- CREATE ----------------
 
