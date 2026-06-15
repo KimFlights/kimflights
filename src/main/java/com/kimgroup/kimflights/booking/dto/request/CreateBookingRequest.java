@@ -1,10 +1,12 @@
-package com.kimgroup.kimflights.booking.dto;
+package com.kimgroup.kimflights.booking.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 
 import java.util.List;
+
+import com.kimgroup.kimflights.booking.dto.PassengerDTO;
 
 @Builder
 public record CreateBookingRequest(

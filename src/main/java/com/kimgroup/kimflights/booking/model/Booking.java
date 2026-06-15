@@ -45,10 +45,20 @@ public class Booking {
     private List<Passenger> passengers = new ArrayList<>();
 
     public BigDecimal getTotalPrice() {
-        return passengers.stream()
-                .flatMap(p -> p.getTickets().stream())
-                .map(Ticket::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal ticketTotal =
+                passengers.stream()
+                        .flatMap(p -> p.getTickets().stream())
+                        .map(Ticket::getPrice)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal luggageTotal =
+                passengers.stream()
+                        .flatMap(p -> p.getLuggage().stream())
+                        .map(Luggage::getPrice)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return ticketTotal.add(luggageTotal);
     }
 
     public void addPassenger(Passenger passenger) {

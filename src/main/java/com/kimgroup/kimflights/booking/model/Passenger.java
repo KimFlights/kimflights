@@ -64,10 +64,15 @@ public class Passenger {
         tickets.remove(ticket);
         ticket.setPassenger(null);
     }
-    
+
     public void addLuggage(Luggage luggage) {
         this.luggage.add(luggage);
         luggage.setPassenger(this);
+    }
+    
+    public void removeLuggage(Luggage luggage) {
+        this.luggage.remove(luggage);
+        luggage.setPassenger(null);
     }
     
 }

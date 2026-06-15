@@ -1,4 +1,4 @@
-package com.kimgroup.kimflights.booking.service;
+package com.kimgroup.kimflights.booking;
 
 import com.kimgroup.kimflights.booking.model.BookingStatus;
 
@@ -30,55 +30,34 @@ booking
     └── BookingController
  */
 
+
+/**
+ * Requirements:
+ * 1. send BookingSummary to payment module
+ * 2. allow front end to create a booking from beginning to end, filling out passenger details, ticket details, luggage details & total cost
+ * 3. send the information of those summaries to the proper modules, and once validated, store that information in the database
+ */
+
 import com.kimgroup.kimflights.booking.dto.*;
 import com.kimgroup.kimflights.booking.dto.request.*;
 import com.kimgroup.kimflights.booking.dto.response.BookingResponse;
-
 import java.util.List;
 
 public interface BookingService {
 
-    // CREATE
+    // Booking
     BookingResponse createBooking(CreateBookingRequest request);
 
-    // READ
     BookingResponse getBooking(String bookingReference);
 
     List<BookingSummary> getAllBookings();
 
-    // STATUS
-    BookingResponse updateBookingStatus(String bookingReference, BookingStatus status);
+    BookingResponse updateBookingStatus(
+            String bookingReference,
+            BookingStatus status);
 
     void cancelBooking(String bookingReference);
 
-    // PASSENGER OPERATIONS
-    PassengerDTO addPassenger(String bookingReference, AddPassengerRequest request);
-
-    void removePassenger(String bookingReference, String passengerId);
-
-    // TICKET OPERATIONS
-    TicketDTO addTicket(
-            String bookingReference,
-            String passengerId,
-            AddTicketRequest request
-    );
-
-    void removeTicket(
-            String bookingReference,
-            String passengerId,
-            String ticketCode
-    );
-
-    // LUGGAGE OPERATIONS
-    LuggageDTO addLuggage(
-            String bookingReference,
-            String passengerId,
-            AddLuggageRequest request
-    );
-
-    void removeLuggage(
-            String bookingReference,
-            String passengerId,
-            Integer luggageId
-    );
+    BookingSummary getBookingSummary(String bookingReference);
+    
 }
