@@ -12,6 +12,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -35,8 +36,8 @@ class FlightControllerTest {
     void shouldReturnAllFlights() throws Exception {
         FlightDTO flight1 = FlightDTO.builder()
                 .id("FL-123")
-                .departureDate(LocalDateTime.of(2026, 6, 11, 8, 0))
-                .arrivalDate(LocalDateTime.of(2026, 6, 11, 10, 30))
+                .departureDate(LocalDateTime.of(2026, Month.JUNE, 11, 8, 0))
+                .arrivalDate(LocalDateTime.of(2026, Month.JUNE, 11, 10, 30))
                 .distance(850)
                 .estimatedTimeInMinutes(150)
                 .flightStatus(FlightStatus.SCHEDULED)
@@ -60,8 +61,8 @@ class FlightControllerTest {
     void shouldReturnFlightById() throws Exception {
         FlightDTO flight = FlightDTO.builder()
                 .id("FL-123")
-                .departureDate(LocalDateTime.of(2026, 6, 11, 8, 0))
-                .arrivalDate(LocalDateTime.of(2026, 6, 11, 10, 30))
+                .departureDate(LocalDateTime.of(2026, Month.JUNE, 11, 8, 0))
+                .arrivalDate(LocalDateTime.of(2026, Month.JUNE, 11, 10, 30))
                 .distance(850)
                 .estimatedTimeInMinutes(150)
                 .flightStatus(FlightStatus.SCHEDULED)
@@ -84,8 +85,8 @@ class FlightControllerTest {
     void shouldCreateFlight() throws Exception {
         FlightDTO flight = FlightDTO.builder()
                 .id("FL-123")
-                .departureDate(LocalDateTime.of(2026, 6, 11, 8, 0))
-                .arrivalDate(LocalDateTime.of(2026, 6, 11, 10, 30))
+                .departureDate(LocalDateTime.of(2026, Month.JUNE, 11, 8, 0))
+                .arrivalDate(LocalDateTime.of(2026, Month.JUNE, 11, 10, 30))
                 .distance(850)
                 .estimatedTimeInMinutes(150)
                 .flightStatus(FlightStatus.SCHEDULED)
@@ -124,8 +125,8 @@ class FlightControllerTest {
     void shouldUpdateFlight() throws Exception {
         FlightDTO flight = FlightDTO.builder()
                 .id("FL-123")
-                .departureDate(LocalDateTime.of(2026, 6, 11, 8, 0))
-                .arrivalDate(LocalDateTime.of(2026, 6, 11, 10, 30))
+                .departureDate(LocalDateTime.of(2026, Month.JUNE, 11, 8, 0))
+                .arrivalDate(LocalDateTime.of(2026, Month.JUNE, 11, 10, 30))
                 .distance(900)
                 .estimatedTimeInMinutes(160)
                 .flightStatus(FlightStatus.DELAYED)
