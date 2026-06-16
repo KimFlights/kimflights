@@ -2,15 +2,15 @@ package com.kimgroup.kimflights.flight.mapper;
 
 import com.kimgroup.kimflights.flight.FlightDTO;
 import com.kimgroup.kimflights.flight.models.Aircraft;
-import com.kimgroup.kimflights.flight.models.Airline;
 import com.kimgroup.kimflights.flight.models.Airport;
 import com.kimgroup.kimflights.flight.models.Flight;
+import com.kimgroup.kimflights.flight.models.FlightRoute;
 import com.kimgroup.kimflights.flight.repository.AircraftRepository;
-import com.kimgroup.kimflights.flight.repository.AirlineRepository;
 import com.kimgroup.kimflights.flight.repository.AirportRepository;
+import com.kimgroup.kimflights.flight.repository.FlightRouteRepository;
 import com.kimgroup.kimflights.flight.exception.AircraftNotFoundException;
-import com.kimgroup.kimflights.flight.exception.AirlineNotFoundException;
 import com.kimgroup.kimflights.flight.exception.AirportNotFoundException;
+import com.kimgroup.kimflights.flight.exception.FlightRouteNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,13 +18,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class FlightMapper {
     private final AircraftRepository aircraftRepository;
-    private final AirlineRepository airlineRepository;
+    private final FlightRouteRepository flightRouteRepository;
     private final AirportRepository airportRepository;
 
     public FlightDTO toDTO(Flight flight) {
         if (flight == null) {
             return null;
         }
+        FlightRoute route = flight.getFlightRoute();
         return FlightDTO.builder()
             .id(flight.getId())
             .departureDate(flight.getDepartureDate())
@@ -32,10 +33,13 @@ public class FlightMapper {
             .distance(flight.getDistance())
             .estimatedTimeInMinutes(flight.getEstimatedTimeInMinutes())
             .flightStatus(flight.getFlightStatus())
+            .flightCode(route.getFlightCode())
             .aircraftName(flight.getAircraft().map(Aircraft::getName).orElse(null))
-            .airlineName(flight.getAirline().getName())
-            .originAirportCode(flight.getOrigin().getCode())
-            .destinationAirportCode(flight.getDestination().getCode())
+            .airlineName(route.getAirline().getName())
+            .originAirportCode(flight.getOriginOverride() != null ? flight.getOriginOverride().getCode() : route.getOrigin().getCode())
+            .destinationAirportCode(flight.getDestinationOverride() != null ? flight.getDestinationOverride().getCode() : route.getDestination().getCode())
+            .originAirportCodeOverride(flight.getOriginOverride() != null ? flight.getOriginOverride().getCode() : null)
+            .destinationAirportCodeOverride(flight.getDestinationOverride() != null ? flight.getDestinationOverride().getCode() : null)
             .build();
     }
 
@@ -67,16 +71,26 @@ public class FlightMapper {
             flight.setAircraft(null);
         }
 
-        Airline airline = airlineRepository.findByName(dto.airlineName())
-            .orElseThrow(() -> new AirlineNotFoundException(dto.airlineName()));
-        flight.setAirline(airline);
+        FlightRoute route = flightRouteRepository.findById(dto.flightCode())
+            .orElseThrow(() -> new FlightRouteNotFoundException(dto.flightCode()));
+        flight.setFlightRoute(route);
 
-        Airport origin = airportRepository.findById(dto.originAirportCode())
-            .orElseThrow(() -> new AirportNotFoundException(dto.originAirportCode()));
-        flight.setOrigin(origin);
+        if (dto.originAirportCodeOverride() != null && !dto.originAirportCodeOverride().isBlank()) {
+            Airport originOverride = airportRepository.findById(dto.originAirportCodeOverride())
+                .orElseThrow(() -> new AirportNotFoundException(dto.originAirportCodeOverride()));
+            flight.setOriginOverride(originOverride);
+        } else {
+            flight.setOriginOverride(null);
+        }
 
-        Airport destination = airportRepository.findById(dto.destinationAirportCode())
-            .orElseThrow(() -> new AirportNotFoundException(dto.destinationAirportCode()));
-        flight.setDestination(destination);
+        if (dto.destinationAirportCodeOverride() != null && !dto.destinationAirportCodeOverride().isBlank()) {
+            Airport destOverride = airportRepository.findById(dto.destinationAirportCodeOverride())
+                .orElseThrow(() -> new AirportNotFoundException(dto.destinationAirportCodeOverride()));
+            flight.setDestinationOverride(destOverride);
+        } else {
+            flight.setDestinationOverride(null);
+        }
     }
 }
+
+

@@ -41,6 +41,7 @@ class FlightControllerTest {
                 .distance(850)
                 .estimatedTimeInMinutes(150)
                 .flightStatus(FlightStatus.SCHEDULED)
+                .flightCode("DL123")
                 .aircraftName("737 Max")
                 .airlineName("Delta Air Lines")
                 .originAirportCode("JFK")
@@ -54,6 +55,7 @@ class FlightControllerTest {
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value("FL-123"))
                 .andExpect(jsonPath("$[0].distance").value(850))
+                .andExpect(jsonPath("$[0].flightCode").value("DL123"))
                 .andExpect(jsonPath("$[0].flightStatus").value("SCHEDULED"));
     }
 
@@ -66,6 +68,7 @@ class FlightControllerTest {
                 .distance(850)
                 .estimatedTimeInMinutes(150)
                 .flightStatus(FlightStatus.SCHEDULED)
+                .flightCode("DL123")
                 .aircraftName("737 Max")
                 .airlineName("Delta Air Lines")
                 .originAirportCode("JFK")
@@ -78,6 +81,7 @@ class FlightControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("FL-123"))
                 .andExpect(jsonPath("$.distance").value(850))
+                .andExpect(jsonPath("$.flightCode").value("DL123"))
                 .andExpect(jsonPath("$.flightStatus").value("SCHEDULED"));
     }
 
@@ -90,6 +94,7 @@ class FlightControllerTest {
                 .distance(850)
                 .estimatedTimeInMinutes(150)
                 .flightStatus(FlightStatus.SCHEDULED)
+                .flightCode("DL123")
                 .aircraftName("737 Max")
                 .airlineName("Delta Air Lines")
                 .originAirportCode("JFK")
@@ -106,10 +111,8 @@ class FlightControllerTest {
                     "distance": 850,
                     "estimatedTimeInMinutes": 150,
                     "flightStatus": "SCHEDULED",
-                    "aircraftName": "737 Max",
-                    "airlineName": "Delta Air Lines",
-                    "originAirportCode": "JFK",
-                    "destinationAirportCode": "LAX"
+                    "flightCode": "DL123",
+                    "aircraftName": "737 Max"
                 }
                 """;
 
@@ -118,6 +121,7 @@ class FlightControllerTest {
                         .content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("FL-123"))
+                .andExpect(jsonPath("$.flightCode").value("DL123"))
                 .andExpect(jsonPath("$.distance").value(850));
     }
 
@@ -130,6 +134,7 @@ class FlightControllerTest {
                 .distance(900)
                 .estimatedTimeInMinutes(160)
                 .flightStatus(FlightStatus.DELAYED)
+                .flightCode("DL123")
                 .aircraftName("737 Max")
                 .airlineName("Delta Air Lines")
                 .originAirportCode("JFK")
@@ -146,10 +151,8 @@ class FlightControllerTest {
                     "distance": 900,
                     "estimatedTimeInMinutes": 160,
                     "flightStatus": "DELAYED",
-                    "aircraftName": "737 Max",
-                    "airlineName": "Delta Air Lines",
-                    "originAirportCode": "JFK",
-                    "destinationAirportCode": "LAX"
+                    "flightCode": "DL123",
+                    "aircraftName": "737 Max"
                 }
                 """;
 
@@ -159,6 +162,7 @@ class FlightControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("FL-123"))
                 .andExpect(jsonPath("$.distance").value(900))
+                .andExpect(jsonPath("$.flightCode").value("DL123"))
                 .andExpect(jsonPath("$.flightStatus").value("DELAYED"));
     }
 
@@ -180,9 +184,7 @@ class FlightControllerTest {
                     "distance": -10,
                     "estimatedTimeInMinutes": 0,
                     "flightStatus": null,
-                    "airlineName": "",
-                    "originAirportCode": "",
-                    "destinationAirportCode": ""
+                    "flightCode": ""
                 }
                 """;
 
@@ -195,9 +197,50 @@ class FlightControllerTest {
                 .andExpect(jsonPath("$.distance").exists())
                 .andExpect(jsonPath("$.estimatedTimeInMinutes").exists())
                 .andExpect(jsonPath("$.flightStatus").exists())
-                .andExpect(jsonPath("$.airlineName").exists())
-                .andExpect(jsonPath("$.originAirportCode").exists())
-                .andExpect(jsonPath("$.destinationAirportCode").exists());
+                .andExpect(jsonPath("$.flightCode").exists());
+    }
+
+    @Test
+    void shouldCreateFlightWithOverrides() throws Exception {
+        FlightDTO flight = FlightDTO.builder()
+                .id("FL-123")
+                .departureDate(LocalDateTime.of(2026, Month.JUNE, 11, 8, 0))
+                .arrivalDate(LocalDateTime.of(2026, Month.JUNE, 11, 10, 30))
+                .distance(850)
+                .estimatedTimeInMinutes(150)
+                .flightStatus(FlightStatus.SCHEDULED)
+                .flightCode("DL123")
+                .aircraftName("737 Max")
+                .airlineName("Delta Air Lines")
+                .originAirportCode("JFK")
+                .destinationAirportCode("LAX")
+                .originAirportCodeOverride("MIA")
+                .destinationAirportCodeOverride("ORD")
+                .build();
+
+        when(flightService.create(any(FlightDTO.class))).thenReturn(flight);
+
+        String json = """
+                {
+                    "id": "FL-123",
+                    "departureDate": "2026-06-11T08:00:00",
+                    "arrivalDate": "2026-06-11T10:30:00",
+                    "distance": 850,
+                    "estimatedTimeInMinutes": 150,
+                    "flightStatus": "SCHEDULED",
+                    "flightCode": "DL123",
+                    "originAirportCodeOverride": "MIA",
+                    "destinationAirportCodeOverride": "ORD"
+                }
+                """;
+
+        mockMvc.perform(post("/flight")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("FL-123"))
+                .andExpect(jsonPath("$.flightCode").value("DL123"))
+                .andExpect(jsonPath("$.originAirportCodeOverride").value("MIA"))
+                .andExpect(jsonPath("$.destinationAirportCodeOverride").value("ORD"));
     }
 }
-

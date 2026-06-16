@@ -17,6 +17,7 @@ public class FlightExceptionHandler {
 
     @ExceptionHandler({
             FlightNotFoundException.class,
+            FlightRouteNotFoundException.class,
             AircraftNotFoundException.class,
             AirlineNotFoundException.class,
             AirportNotFoundException.class

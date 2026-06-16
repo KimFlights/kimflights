@@ -10,11 +10,14 @@ INSERT INTO aircraft (name, manufacturer, seat_capacity) VALUES ('A320neo', 'Air
 INSERT INTO airline (id, code, name) VALUES (1, 'DL', 'Delta Air Lines') ON CONFLICT (id) DO NOTHING;
 INSERT INTO airline (id, code, name) VALUES (2, 'AA', 'American Airlines') ON CONFLICT (id) DO NOTHING;
 
+INSERT INTO flight_route (flight_code, departure_time, arrival_time, airline_id, origin_airport_code, destination_airport_code) VALUES ('DL123', '08:00:00', '10:30:00', 1, 'JFK', 'LAX') ON CONFLICT (flight_code) DO NOTHING;
+INSERT INTO flight_route (flight_code, departure_time, arrival_time, airline_id, origin_airport_code, destination_airport_code) VALUES ('AA456', '14:15:00', '18:45:00', 2, 'LAX', 'JFK') ON CONFLICT (flight_code) DO NOTHING;
+
 INSERT INTO booking (booking_reference, reserved_date, booking_status) VALUES ('BK-8472', '2026-06-10', true) ON CONFLICT (booking_reference) DO NOTHING;
 INSERT INTO booking (booking_reference, reserved_date, booking_status) VALUES ('BK-9911', '2026-06-12', false) ON CONFLICT (booking_reference) DO NOTHING;
 
-INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code) VALUES ('FL-123', '2026-06-11 08:00:00', '2026-06-11 10:30:00', 850, 150, 'SCHEDULED', '737 Max', 1, 'JFK', 'LAX') ON CONFLICT (id) DO NOTHING;
-INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code) VALUES ('FL-456', '2026-06-12 14:15:00', '2026-06-12 18:45:00', 1600, 270, 'DELAYED', 'A320neo', 2, 'LAX', 'JFK') ON CONFLICT (id) DO NOTHING;
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, flight_code) VALUES ('FL-123', '2026-06-11 08:00:00', '2026-06-11 10:30:00', 850, 150, 'SCHEDULED', '737 Max', 'DL123') ON CONFLICT (id) DO NOTHING;
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, flight_code) VALUES ('FL-456', '2026-06-12 14:15:00', '2026-06-12 18:45:00', 1600, 270, 'DELAYED', 'A320neo', 'AA456') ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO ticket (ticket_code, type, price, availability, flight_id) VALUES ('TC-9001', 'Economy', 150.00, 'AVAILABLE', 'FL-123') ON CONFLICT (ticket_code) DO NOTHING;
 INSERT INTO ticket (ticket_code, type, price, availability, flight_id) VALUES ('TC-9002', 'Business', 450.00, 'RESERVED', 'FL-456') ON CONFLICT (ticket_code) DO NOTHING;
@@ -102,6 +105,10 @@ ON CONFLICT (booking_reference) DO NOTHING;
 
 
 -- FLIGHTS
+INSERT INTO flight_route (flight_code, departure_time, arrival_time, airline_id, origin_airport_code, destination_airport_code) VALUES ('UA789', '07:00:00', '09:20:00', 3, 'ORD', 'JFK') ON CONFLICT (flight_code) DO NOTHING;
+INSERT INTO flight_route (flight_code, departure_time, arrival_time, airline_id, origin_airport_code, destination_airport_code) VALUES ('WN790', '13:30:00', '16:10:00', 4, 'DFW', 'MIA') ON CONFLICT (flight_code) DO NOTHING;
+INSERT INTO flight_route (flight_code, departure_time, arrival_time, airline_id, origin_airport_code, destination_airport_code) VALUES ('B6791', '18:45:00', '21:15:00', 5, 'MIA', 'ORD') ON CONFLICT (flight_code) DO NOTHING;
+
 INSERT INTO flight (
     id,
     departure_date,
@@ -110,9 +117,7 @@ INSERT INTO flight (
     estimated_time_in_minutes,
     flight_status,
     aircraft_name,
-    airline_id,
-    origin_airport_code,
-    destination_airport_code
+    flight_code
 )
 VALUES (
     'FL-789',
@@ -122,9 +127,7 @@ VALUES (
     140,
     'SCHEDULED',
     '787 Dreamliner',
-    3,
-    'ORD',
-    'JFK'
+    'UA789'
 )
 ON CONFLICT (id) DO NOTHING;
 
@@ -136,9 +139,7 @@ INSERT INTO flight (
     estimated_time_in_minutes,
     flight_status,
     aircraft_name,
-    airline_id,
-    origin_airport_code,
-    destination_airport_code
+    flight_code
 )
 VALUES (
     'FL-790',
@@ -148,9 +149,7 @@ VALUES (
     160,
     'BOARDING',
     'A350-900',
-    4,
-    'DFW',
-    'MIA'
+    'WN790'
 )
 ON CONFLICT (id) DO NOTHING;
 
@@ -162,9 +161,7 @@ INSERT INTO flight (
     estimated_time_in_minutes,
     flight_status,
     aircraft_name,
-    airline_id,
-    origin_airport_code,
-    destination_airport_code
+    flight_code
 )
 VALUES (
     'FL-791',
@@ -174,9 +171,7 @@ VALUES (
     150,
     'CANCELLED',
     'Embraer E195-E2',
-    5,
-    'MIA',
-    'ORD'
+    'B6791'
 )
 ON CONFLICT (id) DO NOTHING;
 

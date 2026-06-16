@@ -30,15 +30,18 @@ public record FlightDTO(
     @NotNull(message = "Flight status is required")
     FlightStatus flightStatus,
 
+    @NotBlank(message = "Flight code is required")
+    String flightCode,
+
     String aircraftName,
 
-    @NotBlank(message = "Airline name is required")
     String airlineName,
 
-    @NotBlank(message = "Origin airport code is required")
     String originAirportCode,
 
-    @NotBlank(message = "Destination airport code is required")
-    String destinationAirportCode
-) {}
+    String destinationAirportCode,
 
+    String originAirportCodeOverride,
+
+    String destinationAirportCodeOverride
+) {}

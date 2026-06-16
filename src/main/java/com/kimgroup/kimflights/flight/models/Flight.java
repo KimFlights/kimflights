@@ -32,16 +32,16 @@ public class Flight {
     private Aircraft aircraft;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "airline_id", nullable = false)
-    private Airline airline;
+    @JoinColumn(name = "flight_code", nullable = false)
+    private FlightRoute flightRoute;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "origin_airport_code", nullable = false)
-    private Airport origin;
+    @ManyToOne
+    @JoinColumn(name = "origin_override_airport_code")
+    private Airport originOverride;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "destination_airport_code", nullable = false)
-    private Airport destination;
+    @ManyToOne
+    @JoinColumn(name = "destination_override_airport_code")
+    private Airport destinationOverride;
 
     public Optional<Aircraft> getAircraft() {
         return Optional.ofNullable(aircraft);
