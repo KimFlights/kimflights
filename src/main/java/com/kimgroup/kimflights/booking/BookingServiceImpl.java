@@ -1,6 +1,6 @@
 package com.kimgroup.kimflights.booking;
 
-import com.kimgroup.kimflights.CreateBookingRequest;
+import com.kimgroup.kimflights.booking.dto.CreateBookingRequest;
 import com.kimgroup.kimflights.booking.dto.*;
 import com.kimgroup.kimflights.booking.exception.BookingNotFoundException;
 import com.kimgroup.kimflights.booking.model.*;

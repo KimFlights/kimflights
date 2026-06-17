@@ -3,8 +3,8 @@ package com.kimgroup.kimflights.booking.controller;
 
 import com.kimgroup.kimflights.booking.BookingService;
 import com.kimgroup.kimflights.booking.dto.BookingSummary;
-import com.kimgroup.kimflights.booking.dto.request.CreateBookingRequest;
-import com.kimgroup.kimflights.booking.dto.response.BookingResponse;
+import com.kimgroup.kimflights.booking.dto.CreateBookingRequest;
+import com.kimgroup.kimflights.booking.dto.BookingResponse;
 import com.kimgroup.kimflights.booking.model.BookingStatus;
 
 import lombok.RequiredArgsConstructor;
