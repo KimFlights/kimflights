@@ -1,7 +1,7 @@
 package com.kimgroup.kimflights.booking;
 
 import com.kimgroup.kimflights.booking.model.BookingStatus;
-import com.kimgroup.kimflights.CreateBookingRequest;
+import com.kimgroup.kimflights.booking.dto.CreateBookingRequest;
 
 /*
 booking
