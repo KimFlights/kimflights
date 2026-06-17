@@ -27,8 +27,6 @@ public class BookingServiceImpl implements BookingService {
     private final BookingDomainService domainService;
 
     private final PassengerMapper passengerMapper;
-    private final TicketMapper ticketMapper;
-    private final LuggageMapper luggageMapper;
 
     // ---------------- CREATE ----------------
 
