@@ -10,6 +10,8 @@ import com.kimgroup.kimflights.user.models.StatusEnum;
 import com.kimgroup.kimflights.user.models.User;
 import com.kimgroup.kimflights.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.modulith.NamedInterface;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@NamedInterface
 @Service
 @RequiredArgsConstructor
 public class UserService {
