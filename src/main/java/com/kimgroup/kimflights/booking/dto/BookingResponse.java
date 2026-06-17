@@ -1,6 +1,5 @@
-package com.kimgroup.kimflights.booking.dto.response;
+package com.kimgroup.kimflights.booking.dto;
 
-import com.kimgroup.kimflights.booking.dto.PassengerDTO;
 import com.kimgroup.kimflights.booking.model.BookingStatus;
 import lombok.Builder;
 
