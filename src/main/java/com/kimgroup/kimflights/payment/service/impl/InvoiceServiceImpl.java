@@ -5,8 +5,9 @@ import com.kimgroup.kimflights.payment.dto.InvoiceDTO;
 import com.kimgroup.kimflights.payment.repository.InvoiceRepository;
 import com.kimgroup.kimflights.payment.model.Invoice;
 import com.kimgroup.kimflights.payment.model.InvoiceStatus;
-import com.kimgroup.kimflights.booking.service.BookingService;
-import com.kimgroup.kimflights.booking.dto.BookingDTO;
+import com.kimgroup.kimflights.booking.BookingResponse;
+import com.kimgroup.kimflights.booking.BookingService;
+
 import org.springframework.stereotype.Service;
 
 import com.kimgroup.kimflights.payment.mapper.InvoiceMapper;
@@ -34,9 +35,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     public InvoiceDTO create(String bookingId) {
-        BookingDTO booking = bookingService.findById(bookingId);
+        BookingResponse booking = bookingService.findById(bookingId);
 
-        BigDecimal totalPrice = new BigDecimal("150.00");
+        BigDecimal totalPrice = booking.totalPrice();
 
         Invoice invoice = new Invoice();
         invoice.setBookingId(bookingId);
