@@ -1,8 +1,6 @@
 package com.kimgroup.kimflights.user.controller;
 
-
-
-import com.kimgroup.kimflights.user.dto.UserDTO;
+import com.kimgroup.kimflights.user.dto.UserResponseDTO;
 import com.kimgroup.kimflights.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +20,7 @@ public class UserController {
     // ---------------------------
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<UserDTO> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers() {
 
         return userService.getAllUsers();
     }
@@ -32,31 +30,9 @@ public class UserController {
     // ---------------------------
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public UserDTO getUserById(@PathVariable String id) {
+    public UserResponseDTO getUserById(@PathVariable String id) {
 
         return userService.getUserById(id);
-    }
-//
-//    // ---------------------------
-//    // CREATE USER (ADMIN only)
-//    // ---------------------------
-//    @PostMapping
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public UserDTO createUser(@RequestBody UserDTO dto) {
-//
-//        return userService.createUser(dto);
-//    }
-
-    // ---------------------------
-    // UPDATE USER (ADMIN only)
-    // ---------------------------
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public UserDTO updateUser(
-            @PathVariable String id,
-            @RequestBody UserDTO dto) {
-
-        return userService.updateUser(id, dto);
     }
 
     // ---------------------------
@@ -72,9 +48,9 @@ public class UserController {
     // ---------------------------
     // GET CURRENT LOGGED USER
     // ---------------------------
-    @GetMapping("/me/")
+    @GetMapping("/me")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public UserDTO getMyProfile() {
+    public UserResponseDTO getMyProfile() {
 
         return userService.getCurrentUser();
     }
