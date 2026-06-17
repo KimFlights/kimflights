@@ -1,8 +1,7 @@
 package com.kimgroup.kimflights.booking;
 
+import com.kimgroup.kimflights.CreateBookingRequest;
 import com.kimgroup.kimflights.booking.dto.*;
-import com.kimgroup.kimflights.booking.dto.request.*;
-import com.kimgroup.kimflights.booking.dto.response.BookingResponse;
 import com.kimgroup.kimflights.booking.exception.BookingNotFoundException;
 import com.kimgroup.kimflights.booking.model.*;
 import com.kimgroup.kimflights.booking.repository.BookingRepository;
@@ -143,6 +142,19 @@ public class BookingServiceImpl implements BookingService {
         );
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public BookingResponse findById(String bookingReference) {
+        
+        validationService.validateBookingExists(bookingReference);
+
+        Booking booking = bookingRepository.findById(bookingReference)
+                .orElseThrow(() -> new BookingNotFoundException(bookingReference));
+
+        return toResponse(booking);
+    }
+    
     // ---------------- HELPERS ----------------
 
     private Address toAddress(AddressDTO dto) {

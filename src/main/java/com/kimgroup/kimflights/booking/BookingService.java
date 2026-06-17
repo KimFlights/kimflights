@@ -1,6 +1,7 @@
 package com.kimgroup.kimflights.booking;
 
 import com.kimgroup.kimflights.booking.model.BookingStatus;
+import com.kimgroup.kimflights.CreateBookingRequest;
 
 /*
 booking
@@ -39,8 +40,6 @@ booking
  */
 
 import com.kimgroup.kimflights.booking.dto.*;
-import com.kimgroup.kimflights.booking.dto.request.*;
-import com.kimgroup.kimflights.booking.dto.response.BookingResponse;
 import java.util.List;
 
 public interface BookingService {
@@ -59,5 +58,7 @@ public interface BookingService {
     void cancelBooking(String bookingReference);
 
     BookingSummary getBookingSummary(String bookingReference);
+
+    BookingResponse findById(String bookingReference);
     
 }
