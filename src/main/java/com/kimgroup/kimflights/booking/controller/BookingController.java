@@ -1,5 +1,6 @@
 package com.kimgroup.kimflights.booking.controller;
 
+
 import com.kimgroup.kimflights.booking.BookingService;
 import com.kimgroup.kimflights.booking.dto.BookingSummary;
 import com.kimgroup.kimflights.booking.dto.request.CreateBookingRequest;
@@ -68,13 +69,5 @@ public class BookingController {
         return ResponseEntity.ok(
                 bookingService.updateBookingStatus(bookingReference, status)
         );
-    }
-
-    @DeleteMapping("/{bookingReference}")
-    public ResponseEntity<Void> cancelBooking(
-            @PathVariable String bookingReference
-    ) {
-        bookingService.cancelBooking(bookingReference);
-        return ResponseEntity.noContent().build();
     }
 }
