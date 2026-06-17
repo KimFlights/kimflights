@@ -9,16 +9,16 @@ services:
     ports:
       - '5432:5432'
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: kimflights-app
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/kimflights
-      SPRING_DATASOURCE_USERNAME: sa
-      SPRING_DATASOURCE_PASSWORD: mysecretpassword
+#  app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: kimflights-app
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - postgres
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/kimflights
+#      SPRING_DATASOURCE_USERNAME: sa
+#      SPRING_DATASOURCE_PASSWORD: mysecretpassword
