@@ -1,4 +1,4 @@
-package com.kimgroup.kimflights.booking.dto.request;
+package com.kimgroup.kimflights;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
