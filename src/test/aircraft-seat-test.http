@@ -1,0 +1,41 @@
+### Get Boeing 737-800 Aircraft (including seats)
+GET http://localhost:8080/api/aircraft/Boeing%20737-800
+Accept: application/json
+
+###
+
+### Update Aircraft Seats (Update First Class seats to Business, remove seat-b737-12a, add a new seat-b737-2a)
+PUT http://localhost:8080/api/aircraft/Boeing%20737-800
+Content-Type: application/json
+
+{
+  "name": "Boeing 737-800",
+  "manufacturer": "Boeing",
+  "seatCapacity": 189,
+  "seats": [
+    {
+      "id": "seat-b737-1a",
+      "aircraftId": "Boeing 737-800",
+      "seatNumber": "1A",
+      "cabin": "Business"
+    },
+    {
+      "id": "seat-b737-1b",
+      "aircraftId": "Boeing 737-800",
+      "seatNumber": "1B",
+      "cabin": "Business2"
+    },
+    {
+      "id": "seat-b737-2a",
+      "aircraftId": "Boeing 737-800",
+      "seatNumber": "2A",
+      "cabin": "Premium Economy"
+    }
+  ]
+}
+
+###
+
+### Get Boeing 737-800 Aircraft again to verify update
+GET http://localhost:8080/api/aircraft/Boeing%20737-800
+Accept: application/json

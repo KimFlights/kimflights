@@ -19,12 +19,14 @@ public class AircraftService {
     private final AircraftMapper aircraftMapper;
     private final ApplicationEventPublisher eventPublisher;
 
+    @Transactional(readOnly = true)
     public List<AircraftDTO> findAll() {
         return aircraftRepository.findAll().stream()
             .map(aircraftMapper::toDTO)
             .toList();
     }
 
+    @Transactional(readOnly = true)
     public AircraftDTO findById(String name) {
         Aircraft aircraft = aircraftRepository.findById(name)
             .orElseThrow(() -> new AircraftNotFoundException(name));

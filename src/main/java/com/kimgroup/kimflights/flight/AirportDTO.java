@@ -11,7 +11,13 @@ public record AirportDTO(
     @NotBlank(message = "Airport name is required")
     String name,
 
-    @NotBlank(message = "Address ID is required")
-    String addressId
+    @NotBlank(message = "City is required")
+    String city,
+
+    @NotBlank(message = "Country is required")
+    String country,
+
+    @NotBlank(message = "Region is required")
+    String region
 ) {}
 

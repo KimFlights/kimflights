@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.util.List;
+
 @Builder
 public record AircraftDTO(
     @NotBlank(message = "Aircraft name is required")
@@ -15,6 +17,8 @@ public record AircraftDTO(
 
     @NotNull(message = "Seat capacity is required")
     @Positive(message = "Seat capacity must be positive")
-    Integer seatCapacity
+    Integer seatCapacity,
+
+    List<AircraftSeatDTO> seats
 ) {}
 

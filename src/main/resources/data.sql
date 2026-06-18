@@ -24,12 +24,12 @@ ON CONFLICT (id) DO NOTHING;
 -- AIRPORTS
 -- ==========================================
 
-INSERT INTO airport (code, name, address_id)
+INSERT INTO airport (code, name, city, country, region)
 VALUES
-    ('JFK', 'John F. Kennedy International Airport', 'ADDR-JFK'),
-    ('LAX', 'Los Angeles International Airport', 'ADDR-LAX'),
-    ('ORD', 'O''Hare International Airport', 'ADDR-ORD'),
-    ('DFW', 'Dallas/Fort Worth International Airport', 'ADDR-DFW')
+    ('JFK', 'John F. Kennedy International Airport', 'New York', 'USA', 'New York'),
+    ('LAX', 'Los Angeles International Airport', 'Los Angeles', 'USA', 'California'),
+    ('ORD', 'O''Hare International Airport', 'Chicago', 'USA', 'Illinois'),
+    ('DFW', 'Dallas/Fort Worth International Airport', 'Dallas-Fort Worth', 'USA', 'Texas')
 ON CONFLICT (code) DO NOTHING;
 
 -- ==========================================
@@ -86,3 +86,21 @@ VALUES
         'JFK'
     )
 ON CONFLICT (id) DO NOTHING;
+
+-- ==========================================
+-- AIRCRAFT SEATS
+-- ==========================================
+
+INSERT INTO aircraft_seat (id, cabin, seat_number, aircraft_name)
+VALUES
+    ('seat-b737-1a', 'First', '1A', 'Boeing 737-800'),
+    ('seat-b737-1b', 'First', '1B', 'Boeing 737-800'),
+    ('seat-b737-12a', 'Economy', '12A', 'Boeing 737-800'),
+    ('seat-a320-1a', 'Business', '1A', 'Airbus A320'),
+    ('seat-a320-1b', 'Business', '1B', 'Airbus A320'),
+    ('seat-a320-10a', 'Economy', '10A', 'Airbus A320'),
+    ('seat-b787-1a', 'First', '1A', 'Boeing 787-9'),
+    ('seat-b787-2a', 'Business', '2A', 'Boeing 787-9'),
+    ('seat-b787-30a', 'Economy', '30A', 'Boeing 787-9')
+ON CONFLICT (id) DO NOTHING;
+

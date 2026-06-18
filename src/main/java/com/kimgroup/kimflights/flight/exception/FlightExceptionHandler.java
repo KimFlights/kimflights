@@ -19,7 +19,8 @@ public class FlightExceptionHandler {
             FlightNotFoundException.class,
             AircraftNotFoundException.class,
             AirlineNotFoundException.class,
-            AirportNotFoundException.class
+            AirportNotFoundException.class,
+            AircraftSeatNotFoundException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex) {
         ErrorResponse error = new ErrorResponse(

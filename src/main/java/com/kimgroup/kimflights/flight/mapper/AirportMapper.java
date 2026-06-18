@@ -13,7 +13,9 @@ public class AirportMapper {
         return AirportDTO.builder()
                 .code(airport.getCode())
                 .name(airport.getName())
-                .addressId(airport.getAddressId())
+                .city(airport.getCity())
+                .country(airport.getCountry())
+                .region(airport.getRegion())
                 .build();
     }
 
@@ -32,6 +34,8 @@ public class AirportMapper {
             return;
         }
         airport.setName(dto.name());
-        airport.setAddressId(dto.addressId());
+        airport.setCity(dto.city());
+        airport.setCountry(dto.country());
+        airport.setRegion(dto.region());
     }
 }

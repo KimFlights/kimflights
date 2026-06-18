@@ -14,5 +14,7 @@ public class Airport {
     @Id
     private String code;
     private String name;
-    private String addressId;
+    private String city;
+    private String country;
+    private String region;
 }
