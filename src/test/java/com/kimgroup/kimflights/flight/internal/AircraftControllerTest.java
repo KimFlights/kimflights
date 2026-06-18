@@ -16,9 +16,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import com.kimgroup.kimflights.security.jwt.JwtService;
+import com.kimgroup.kimflights.security.CustomUserDetailsService;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.kimgroup.kimflights.security.CustomUserDetailsService;
 
 @WebMvcTest(AircraftController.class)
 class AircraftControllerTest {
@@ -28,6 +31,12 @@ class AircraftControllerTest {
 
     @MockitoBean
     private AircraftService aircraftService;
+
+    @MockitoBean
+    private JwtService jwtService;
+
+    @MockitoBean
+    private CustomUserDetailsService userDetailsService;
 
     @Test
     void shouldReturnAllAircraft() throws Exception {
