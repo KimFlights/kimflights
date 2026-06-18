@@ -36,8 +36,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    # - name: Build with Maven
+    #   run: mvn -B package --file pom.xml
 
     # Set up native emulation so the standard x86_64 GitHub Runner can build ARM64 Docker images
     - name: Set up QEMU
