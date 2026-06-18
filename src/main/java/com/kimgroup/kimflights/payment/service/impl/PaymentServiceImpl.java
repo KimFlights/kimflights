@@ -12,6 +12,7 @@ import com.kimgroup.kimflights.payment.exception.InvoiceNotFoundException;
 import com.kimgroup.kimflights.payment.exception.TransactionNotFoundException;
 import com.kimgroup.kimflights.payment.model.CardBrand;
 import com.kimgroup.kimflights.payment.mapper.TransactionMapper;
+import com.kimgroup.kimflights.notification.NotificationService;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -22,12 +23,14 @@ public class PaymentServiceImpl implements PaymentService {
     private final TransactionRepository transactionRepository;
     private final InvoiceRepository invoiceRepository;
     private final TransactionMapper transactionMapper;
+    private final NotificationService notificationService;
     private final SecureRandom random = new SecureRandom();
 
-    public PaymentServiceImpl(TransactionRepository transactionRepository, InvoiceRepository invoiceRepository, TransactionMapper transactionMapper) {
+    public PaymentServiceImpl(TransactionRepository transactionRepository, InvoiceRepository invoiceRepository, TransactionMapper transactionMapper, NotificationService notificationService) {
         this.transactionRepository = transactionRepository;
         this.invoiceRepository = invoiceRepository;
         this.transactionMapper = transactionMapper;
+        this.notificationService = notificationService;
     }
 
     public String getCardBrand(String cardNumber) {
@@ -63,6 +66,9 @@ public class PaymentServiceImpl implements PaymentService {
 
         invoiceRepository.save(invoice);
         Transaction saved = transactionRepository.save(transaction);
+        
+        notificationService.sendReceipt(invoice.getId(), saved.getStatus());
+        
         return transactionMapper.toDTO(saved);
     }
 
