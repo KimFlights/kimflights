@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -48,6 +49,14 @@ public class BookingController {
     @GetMapping
     public ResponseEntity<List<BookingSummary>> getAllBookings() {
         return ResponseEntity.ok(bookingService.getAllBookings());
+    }
+
+    @GetMapping("/my-bookings")
+    public ResponseEntity<List<BookingResponse>> getMyBookings(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).build();
+        }
+        return ResponseEntity.ok(bookingService.getUserBookings(principal.getName()));
     }
 
     @GetMapping("/{bookingReference}/summary")

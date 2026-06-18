@@ -24,8 +24,17 @@ public class FlightController {
 
     @GetMapping
     public List<FlightDTO> findAll() {
-
         return flightService.findAll();
+    }
+
+    @GetMapping("/search")
+    public List<FlightDTO> search(
+            @RequestParam String origin,
+            @RequestParam String destination,
+            @RequestParam String date,
+            @RequestParam(defaultValue = "1") int passengers) {
+        // passengers is received for future seat-availability filtering
+        return flightService.searchFlights(origin, destination, date);
     }
 
     @GetMapping("/{id}")
@@ -53,4 +62,3 @@ public class FlightController {
         flightService.updateFlightId(oldId, newId);
     }
 }
-

@@ -11,6 +11,8 @@ import com.kimgroup.kimflights.booking.util.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -38,6 +40,11 @@ public class BookingServiceImpl implements BookingService {
         } while (bookingRepository.existsById(reference));
 
         Booking booking = domainService.createNewBooking(reference);
+        
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
+            booking.setUsername(authentication.getName());
+        }
 
         for (PassengerDTO p : request.passengers()) {
 
@@ -153,6 +160,15 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new BookingNotFoundException(bookingReference));
 
         return toResponse(booking);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookingResponse> getUserBookings(String username) {
+        return bookingRepository.findByUsername(username)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
     
     // ---------------- HELPERS ----------------

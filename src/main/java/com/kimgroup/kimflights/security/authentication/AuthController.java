@@ -7,6 +7,7 @@ import com.kimgroup.kimflights.security.jwt.JwtService;
 import com.kimgroup.kimflights.user.dto.UserRequestDTO;
 import com.kimgroup.kimflights.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -67,5 +68,15 @@ public class AuthController {
                 principal.getUsername(),
                 principal.getRole()
         );
+    }
+
+    // ---------------------------
+    // LOGOUT
+    // ---------------------------
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        // JWT is stateless — the token lives until expiry.
+        // This endpoint gives the client a clean semantic call to discard its token.
+        return ResponseEntity.ok().build();
     }
 }
