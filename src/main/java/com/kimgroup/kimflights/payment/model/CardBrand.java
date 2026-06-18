@@ -13,12 +13,12 @@ public enum CardBrand {
         this.prefix = prefix;
     }
 
-    public static CardBrand fromCardNumber(String cardNumber) {
-        if (cardNumber == null || cardNumber.isEmpty()) {
+    public static CardBrand fromBin(String bin) {
+        if (bin == null || bin.isEmpty()) {
             return UNKNOWN;
         }
         for (CardBrand brand : values()) {
-            if (!brand.prefix.isEmpty() && cardNumber.startsWith(brand.prefix)) {
+            if (!brand.prefix.isEmpty() && bin.startsWith(brand.prefix)) {
                 return brand;
             }
         }

@@ -16,13 +16,13 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("/brand/{cardNumber}")
-    public String verifyCardBrand(@PathVariable String cardNumber) {
-        return paymentService.getCardBrand(cardNumber);
+    @GetMapping("/brand/{bin}")
+    public String checkCardBrand(@PathVariable String bin) {
+        return paymentService.checkCardBrand(bin);
     }
 
-    @PostMapping("/pay")
-    public Long simulatePayment(@Valid @RequestBody PaymentRequestDTO request) {
+    @PostMapping
+    public Long processPayment(@Valid @RequestBody PaymentRequestDTO request) {
         TransactionDTO transaction = paymentService.processPayment(request);
         return transaction.id();
     }
