@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class PaymentPublicEndpoints implements PublicEndpointProvider {
     @Override
     public String[] getPublicEndpoints() {
-        return new String[]{"/payment/brand/**"};
+        return new String[] {};
     }
 }
