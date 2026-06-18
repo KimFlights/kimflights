@@ -1,34 +1,23 @@
 package com.kimgroup.kimflights.user.mapper;
 
-import com.kimgroup.kimflights.user.dto.UserDTO;
+import com.kimgroup.kimflights.user.dto.UserResponseDTO;
 import com.kimgroup.kimflights.user.models.User;
+
 import org.springframework.stereotype.Component;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Component
 public class UserMapper {
-    public UserDTO toDto(User user) {
+    PasswordEncoder passwordEncoder;
 
-        return UserDTO.builder()
-                .id(user.getId())
-                .status(user.getStatus())
-                .role(user.getRole())
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .build();
-    }
+    public UserResponseDTO toResponse(User user) {
 
-    public User toEntity(UserDTO dto) {
-
-        return User.builder()
-                .id(dto.id())
-                .status(dto.status())
-                .role(dto.role())
-                .username(dto.username())
-                .password(dto.password())
-                .firstName(dto.firstName())
-                .lastName(dto.lastName())
-                .build();
+        return new UserResponseDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getRole(),
+                user.getStatus()
+        );
     }
 }
