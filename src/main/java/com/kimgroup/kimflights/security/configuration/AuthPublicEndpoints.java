@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 public class AuthPublicEndpoints implements PublicEndpointProvider {
     @Override
     public String[] getPublicEndpoints() {
-        return new String[]{"/api/auth/**"};
+        return new String[]{"/**"};
     }
 }

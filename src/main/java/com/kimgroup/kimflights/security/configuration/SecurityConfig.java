@@ -1,6 +1,6 @@
 package com.kimgroup.kimflights.security.configuration;
 
-import com.kimgroup.kimflights.security.CustomUserDetailsService;
+import com.kimgroup.kimflights.security.authentication.CustomUserDetailsService;
 import com.kimgroup.kimflights.security.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

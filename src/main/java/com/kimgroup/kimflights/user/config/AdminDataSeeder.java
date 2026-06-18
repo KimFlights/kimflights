@@ -22,15 +22,16 @@ public class AdminDataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (userRepository.findByUsername("admin").isEmpty()) {
-            User admin = User.builder()
-                    .firstName("System")
-                    .lastName("Admin")
-                    .username("admin")
-                    .password(passwordEncoder.encode("admin123"))
-                    .role(Role.ROLE_ADMIN)
-                    .status(StatusEnum.ACTIVE)
-                    .build();
+
+            User admin = new User(
+                    "admin",
+                    passwordEncoder.encode("admin123"),
+                    StatusEnum.ACTIVE,
+                    Role.ROLE_ADMIN
+            );
+
             userRepository.save(admin);
+
             System.out.println("✅ Admin user successfully seeded. Username: admin | Password: admin123");
         }
     }
