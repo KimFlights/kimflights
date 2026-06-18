@@ -2,17 +2,23 @@ package com.kimgroup.kimflights.flight.mapper;
 
 import com.kimgroup.kimflights.flight.AirportDTO;
 import com.kimgroup.kimflights.flight.models.Airport;
+import com.kimgroup.kimflights.flight.models.AirportLocation;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AirportMapper {
+
     public AirportDTO toDTO(Airport airport) {
         if (airport == null) {
             return null;
         }
+        AirportLocation loc = airport.getLocation();
         return AirportDTO.builder()
                 .code(airport.getCode())
-                .addressId(airport.getAddressId())
+                .name(airport.getName())
+                .city(loc != null ? loc.getCity() : null)
+                .country(loc != null ? loc.getCountry() : null)
+                .region(loc != null ? loc.getState() : null)
                 .build();
     }
 
@@ -30,6 +36,14 @@ public class AirportMapper {
         if (dto == null || airport == null) {
             return;
         }
-        airport.setAddressId(dto.addressId());
+        airport.setName(dto.name());
+        airport.setRegion(dto.region());
+        AirportLocation loc = airport.getLocation() != null
+                ? airport.getLocation()
+                : new AirportLocation();
+        loc.setCity(dto.city());
+        loc.setCountry(dto.country());
+        loc.setState(dto.region());
+        airport.setLocation(loc);
     }
 }
