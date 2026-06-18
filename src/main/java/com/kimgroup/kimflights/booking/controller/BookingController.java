@@ -68,10 +68,10 @@ public class BookingController {
         );
     }
 
-    @GetMapping("/{flightId}/occupied-seats")
-    public ResponseEntity<List<String>> getOccupiedSeats(
-            @PathVariable String flightId
-    ) {
+    // ---------------- SEATS ----------------
+
+    @GetMapping("/flight/{flightId}/seats")
+    public ResponseEntity<List<String>> getOccupiedSeats(@PathVariable String flightId) {
         return ResponseEntity.ok(bookingService.getOccupiedSeats(flightId));
     }
 

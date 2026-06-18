@@ -1,5 +1,6 @@
 package com.kimgroup.kimflights.payment.service.impl;
 
+import com.kimgroup.kimflights.booking.repository.TicketRepository;
 import com.kimgroup.kimflights.payment.service.PaymentService;
 import com.kimgroup.kimflights.payment.model.Transaction;
 import com.kimgroup.kimflights.payment.repository.TransactionRepository;
@@ -25,6 +26,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final InvoiceRepository invoiceRepository;
     private final TransactionMapper transactionMapper;
     private final NotificationService notificationService;
+
     private final SecureRandom random = new SecureRandom();
 
     public PaymentServiceImpl(TransactionRepository transactionRepository, InvoiceRepository invoiceRepository,
@@ -99,5 +101,9 @@ public class PaymentServiceImpl implements PaymentService {
             return "****";
         }
         return "**** **** **** " + cardNumber.substring(cardNumber.length() - 4);
+    }
+
+    public void ocupySeat( String SeatNumber){
+
     }
 }
