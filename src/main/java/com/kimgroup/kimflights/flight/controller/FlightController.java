@@ -17,14 +17,19 @@ import java.util.List;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/flight")
+@RequestMapping("/api/flight")
 @RequiredArgsConstructor
 public class FlightController {
     private final FlightService flightService;
 
     @GetMapping
-    public List<FlightDTO> findAll() {
-
+    public List<FlightDTO> findAll(
+            @RequestParam(required = false) String origin,
+            @RequestParam(required = false) String destination,
+            @RequestParam(required = false) String date) {
+        if (origin != null && destination != null && date != null) {
+            return flightService.search(origin, destination, date);
+        }
         return flightService.findAll();
     }
 

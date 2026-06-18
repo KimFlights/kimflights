@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -22,6 +25,16 @@ public class FlightService {
 
     public List<FlightDTO> findAll() {
         return flightRepository.findAll().stream()
+            .map(flightMapper::toDTO)
+            .toList();
+    }
+
+    public List<FlightDTO> search(String origin, String destination, String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        LocalDateTime start = localDate.atStartOfDay();
+        LocalDateTime end = localDate.atTime(LocalTime.MAX);
+        return flightRepository.findByOriginCodeAndDestinationCodeAndDepartureDateBetween(origin, destination, start, end)
+            .stream()
             .map(flightMapper::toDTO)
             .toList();
     }

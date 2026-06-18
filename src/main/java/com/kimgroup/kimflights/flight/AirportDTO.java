@@ -8,6 +8,9 @@ public record AirportDTO(
     @NotBlank(message = "Airport code is required")
     String code,
 
+    @NotBlank(message = "Airport name is required")
+    String name,
+
     @NotBlank(message = "Address ID is required")
     String addressId
 ) {}

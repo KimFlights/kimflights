@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class Airport {
     @Id
     private String code;
+    private String name;
     private String addressId;
 }

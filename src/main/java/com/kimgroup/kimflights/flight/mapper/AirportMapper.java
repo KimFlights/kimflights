@@ -12,6 +12,7 @@ public class AirportMapper {
         }
         return AirportDTO.builder()
                 .code(airport.getCode())
+                .name(airport.getName())
                 .addressId(airport.getAddressId())
                 .build();
     }
@@ -30,6 +31,7 @@ public class AirportMapper {
         if (dto == null || airport == null) {
             return;
         }
+        airport.setName(dto.name());
         airport.setAddressId(dto.addressId());
     }
 }
