@@ -10,7 +10,7 @@ name: KimFlight Java Springboot CI with Maven
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "develop" ]
   pull_request:
     branches: [ "main", "develop" ]
 
