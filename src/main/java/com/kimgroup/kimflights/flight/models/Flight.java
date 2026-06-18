@@ -10,7 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Data
@@ -42,6 +46,9 @@ public class Flight {
     @ManyToOne(optional = false)
     @JoinColumn(name = "destination_airport_code", nullable = false)
     private Airport destination;
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Seat> seats = new ArrayList<>();
 
     public Optional<Aircraft> getAircraft() {
         return Optional.ofNullable(aircraft);

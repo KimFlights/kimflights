@@ -24,6 +24,8 @@ public record TicketDTO(
     TicketStatus availability,
 
     @NotBlank(message = "Flight ID is required")
-    String flightId
+    String flightId,
+
+    String seatNum
 
 ) {}

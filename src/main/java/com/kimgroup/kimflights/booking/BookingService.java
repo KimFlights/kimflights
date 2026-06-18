@@ -62,4 +62,6 @@ public interface BookingService {
     BookingResponse findById(String bookingReference);
     
     List<BookingResponse> getUserBookings(String username);
+
+    List<String> getOccupiedSeats(String flightId);
 }

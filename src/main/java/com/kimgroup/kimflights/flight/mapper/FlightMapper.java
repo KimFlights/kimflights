@@ -33,6 +33,7 @@ public class FlightMapper {
             .estimatedTimeInMinutes(flight.getEstimatedTimeInMinutes())
             .flightStatus(flight.getFlightStatus())
             .aircraftName(flight.getAircraft().map(Aircraft::getName).orElse(null))
+            .seatCapacity(flight.getAircraft().map(Aircraft::getSeatCapacity).orElse(150)) // Fallback to 150
             .airlineName(flight.getAirline().getName())
             .originAirportCode(flight.getOrigin().getCode())
             .destinationAirportCode(flight.getDestination().getCode())

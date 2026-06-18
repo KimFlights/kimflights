@@ -17,6 +17,7 @@ public class TicketMapper {
                 .price(ticket.getPrice())
                 .availability(ticket.getAvailability())
                 .flightId(ticket.getFlightId())
+                .seatNum(ticket.getSeatNum())
                 .build();
     }
 
@@ -31,6 +32,7 @@ public class TicketMapper {
         ticket.setPrice(dto.price());
         ticket.setAvailability(dto.availability());
         ticket.setFlightId(dto.flightId());
+        ticket.setSeatNum(dto.seatNum());
 
         return ticket;
     }

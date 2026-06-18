@@ -32,6 +32,10 @@ public record FlightDTO(
 
     String aircraftName,
 
+    @NotNull(message = "Seat capacity is required")
+    @Positive(message = "Seat capacity must be positive")
+    Integer seatCapacity,
+
     @NotBlank(message = "Airline name is required")
     String airlineName,
 
