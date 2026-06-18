@@ -44,32 +44,33 @@ public class UserService {
 
     public UserResponseDTO registerUser(UserRequestDTO dto) {
 
-        User user = User.builder()
-                .username(dto.username())
-                .password(passwordEncoder.encode(dto.password()))
-                .role(Role.ROLE_USER)
-                .status(StatusEnum.ACTIVE)
-                .build();
+        User user = new User(
+                null,
+                dto.username(),
+                passwordEncoder.encode(dto.password()),
+                StatusEnum.ACTIVE,
+                Role.ROLE_USER
+        );
 
         return userMapper.toResponse(
                 userRepository.save(user)
         );
     }
 
-    public UserResponseDTO registerAdmin(UserRequestDTO dto) {
+        public UserResponseDTO registerAdmin(UserRequestDTO dto) {
 
-        User user = User.builder()
-                .username(dto.username())
-                .password(passwordEncoder.encode(dto.password()))
-                .role(Role.ROLE_ADMIN)
-                .status(StatusEnum.ACTIVE)
-                .build();
+                User user = new User(
+                        null,
+                        dto.username(),
+                        passwordEncoder.encode(dto.password()),
+                        StatusEnum.ACTIVE,
+                        Role.ROLE_ADMIN
+                );
 
-        return userMapper.toResponse(
-                userRepository.save(user)
-        );
-    }
-
+                return userMapper.toResponse(
+                        userRepository.save(user)
+                );
+        }
     public void deleteUser(String id) {
 
         User user = userRepository.findById(id)

@@ -1,7 +1,6 @@
 package com.kimgroup.kimflights.user.models;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
 
     @Id

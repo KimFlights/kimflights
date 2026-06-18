@@ -20,6 +20,7 @@ public class UserController {
     // ---------------------------
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("permitAll()")
     public List<UserResponseDTO> getAllUsers() {
 
         return userService.getAllUsers();

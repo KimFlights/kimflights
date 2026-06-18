@@ -2,12 +2,14 @@ package com.kimgroup.kimflights.security.authentication;
 
 import com.kimgroup.kimflights.security.authentication.dto.LoginRequest;
 import com.kimgroup.kimflights.security.authentication.dto.LoginResponse;
+import com.kimgroup.kimflights.security.authentication.principal.CustomUserPrincipal;
 import com.kimgroup.kimflights.security.jwt.JwtService;
 import com.kimgroup.kimflights.user.dto.UserRequestDTO;
 import com.kimgroup.kimflights.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +40,7 @@ public class AuthController {
     // ---------------------------
     @PostMapping("/registerAdmin")
     public String registerAdmin(@RequestBody UserRequestDTO request) {
-
         userService.registerAdmin(request);
-
         return "Admin registered";
     }
 
@@ -50,21 +50,22 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
 
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.username(),
                         request.password()
                 )
         );
 
-        UserDetails userDetails =
-                userDetailsService.loadUserByUsername(request.username());
+        CustomUserPrincipal principal =
+                (CustomUserPrincipal) authentication.getPrincipal();
 
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(principal);
 
-        return LoginResponse.builder()
-                .token(token)
-                .username(userDetails.getUsername())
-                .build();
+        return new LoginResponse(
+                token,
+                principal.getUsername(),
+                principal.getRole()
+        );
     }
 }
