@@ -16,7 +16,7 @@ import java.util.List;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/airline")
+@RequestMapping("/api/airline")
 @RequiredArgsConstructor
 public class AirlineController {
     private final AirlineService airlineService;
