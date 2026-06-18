@@ -17,8 +17,8 @@ public class PaymentController {
     }
 
     @GetMapping("/brand/{bin}")
-    public String checkCardBrand(@PathVariable String bin) {
-        return paymentService.checkCardBrand(bin);
+    public String getCardBrand(@PathVariable String bin) {
+        return paymentService.getCardBrand(bin);
     }
 
     @PostMapping

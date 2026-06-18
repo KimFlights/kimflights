@@ -33,7 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
         this.notificationService = notificationService;
     }
 
-    public String checkCardBrand(String bin) {
+    public String getCardBrand(String bin) {
         return CardBrand.fromBin(bin).name();
     }
 
@@ -53,7 +53,7 @@ public class PaymentServiceImpl implements PaymentService {
         String bin = request.cardNumber() != null && request.cardNumber().length() >= 6 
                 ? request.cardNumber().substring(0, 6) 
                 : request.cardNumber();
-        transaction.setBrand(checkCardBrand(bin));
+        transaction.setBrand(getCardBrand(bin));
         transaction.setAmount(invoice.getCost());
         transaction.setCreatedAt(LocalDateTime.now());
 
