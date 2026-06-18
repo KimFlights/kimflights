@@ -44,7 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         UserDetails userDetails =
                 userDetailsService.loadUserByUsername(username);
 
-        System.out.println("SDOUHFOUDSHFODSHFSDOUFH" + userDetails.getAuthorities());
+        // System.out.println("SDOUHFOUDSHFODSHFSDOUFH" + userDetails.getAuthorities());
                 
 
         if (jwtService.isTokenValid(token, userDetails)) {
@@ -62,4 +62,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+
 }

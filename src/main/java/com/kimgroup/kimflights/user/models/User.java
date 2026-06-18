@@ -12,6 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+    
+    public User(String username, String password, StatusEnum status, Role role) {
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.role = role;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

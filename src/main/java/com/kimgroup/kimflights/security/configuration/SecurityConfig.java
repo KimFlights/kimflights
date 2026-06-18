@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import java.util.List;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -24,23 +26,27 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomUserDetailsService userDetailsService;
+    private final List<PublicEndpointProvider> publicEndpointProviders;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        String[] publicEndpoints = publicEndpointProviders.stream()
+                .map(PublicEndpointProvider::getPublicEndpoints)
+                .flatMap(Arrays::stream)
+                .toArray(String[]::new);
 
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .authorizeHttpRequests(auth -> auth
-
-                        // public endpoints
-                        .requestMatchers("/api/auth/**").permitAll()
-
-                        // everything else secured
-                        .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests(auth -> {
+                    if (publicEndpoints.length > 0) {
+                        auth.requestMatchers(publicEndpoints).permitAll();
+                    }
+                    auth.anyRequest().authenticated();
+                })
                 .userDetailsService(userDetailsService)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
