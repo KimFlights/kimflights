@@ -22,6 +22,7 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final com.kimgroup.kimflights.booking.repository.TicketRepository ticketRepository;
     private final BookingReferenceGenerator referenceGenerator;
 
     private final BookingValidationService validationService;
@@ -63,7 +64,8 @@ public class BookingServiceImpl implements BookingService {
                             t.type(),
                             t.price(),
                             t.availability(),
-                            t.flightId()
+                            t.flightId(),
+                            t.seatNum()
                     );
 
                     passenger.addTicket(ticket);
@@ -168,6 +170,16 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findByUsername(username)
                 .stream()
                 .map(this::toResponse)
+                .toList();
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> getOccupiedSeats(String flightId) {
+        return ticketRepository.findByFlightId(flightId)
+                .stream()
+                .map(Ticket::getSeatNum)
+                .filter(seatNum -> seatNum != null && !seatNum.equals("UNASSIGNED") && !seatNum.trim().isEmpty())
                 .toList();
     }
     

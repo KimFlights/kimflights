@@ -11,4 +11,6 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
     @Modifying
     @Query("UPDATE Ticket t SET t.flightId = :newFlightId WHERE t.flightId = :oldFlightId")
     void updateFlightId(String oldFlightId, String newFlightId);
+
+    java.util.List<Ticket> findByFlightId(String flightId);
 }
