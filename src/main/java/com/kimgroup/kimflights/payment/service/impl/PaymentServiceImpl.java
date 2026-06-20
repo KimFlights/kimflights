@@ -1,6 +1,5 @@
 package com.kimgroup.kimflights.payment.service.impl;
 
-import com.kimgroup.kimflights.booking.repository.TicketRepository;
 import com.kimgroup.kimflights.payment.service.PaymentService;
 import com.kimgroup.kimflights.payment.model.Transaction;
 import com.kimgroup.kimflights.payment.repository.TransactionRepository;
