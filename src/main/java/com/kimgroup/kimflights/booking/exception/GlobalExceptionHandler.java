@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.security.core.AuthenticationException;
-import com.kimgroup.kimflights.payment.exception.PaymentFailedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -99,17 +98,6 @@ public class GlobalExceptionHandler {
                 "Invalid credentials or expired session"
         );
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
-
-    @ExceptionHandler(PaymentFailedException.class)
-    public ResponseEntity<ErrorResponse> handlePaymentFailedException(PaymentFailedException ex) {
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "BAD_REQUEST",
-                ex.getMessage()
-        );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(Exception.class)
