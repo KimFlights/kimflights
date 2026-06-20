@@ -31,7 +31,7 @@ public class BookingDomainService {
     }
 
     public Ticket createTicket(String code, String type, java.math.BigDecimal price,
-                               TicketStatus status, String flightId) {
+                               TicketStatus status, String flightId, String seatNum) {
 
         Ticket ticket = new Ticket();
         ticket.setTicketCode(code);
@@ -39,6 +39,7 @@ public class BookingDomainService {
         ticket.setPrice(price);
         ticket.setAvailability(status);
         ticket.setFlightId(flightId);
+        ticket.setSeatNum(seatNum);
 
         return ticket;
     }

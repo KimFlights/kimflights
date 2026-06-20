@@ -36,6 +36,8 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
+    private String username;
+
     @OneToMany(
         mappedBy = "booking",
         cascade = CascadeType.ALL,

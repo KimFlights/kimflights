@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,6 +33,16 @@ public class FlightService {
         Flight flight = flightRepository.findById(id)
             .orElseThrow(() -> new FlightNotFoundException(id));
         return flightMapper.toDTO(flight);
+    }
+
+    public List<FlightDTO> searchFlights(String origin, String destination, String date) {
+        LocalDate day = LocalDate.parse(date);
+        LocalDateTime dayStart = day.atStartOfDay();
+        LocalDateTime dayEnd = day.plusDays(1).atStartOfDay();
+        return flightRepository.searchByRoute(origin, destination, dayStart, dayEnd)
+            .stream()
+            .map(flightMapper::toDTO)
+            .toList();
     }
 
     @Transactional
@@ -63,5 +76,3 @@ public class FlightService {
         eventPublisher.publishEvent(new FlightIdUpdatedEvent(oldId, newId));
     }
 }
-
-

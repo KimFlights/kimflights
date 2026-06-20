@@ -1,330 +1,130 @@
--- ==========================================
--- AIRCRAFT
--- ==========================================
+-- ==============================================================
+-- Airport seed data — 17 airports from frontend mock
+-- Safe to run on every startup: ON CONFLICT (code) DO NOTHING
+-- Columns: code, name, region, city, country, state
+-- (city, country, state are the embedded AirportLocation columns)
+-- ==============================================================
+
+INSERT INTO airport (code, name, region, city, country, state)
+VALUES
+  ('LAX', 'Los Angeles Intl',    'California',       'Los Angeles',   'USA',       'California'),
+  ('SFO', 'San Francisco Intl',  'California',       'San Francisco', 'USA',       'California'),
+  ('SAN', 'San Diego Intl',      'California',       'San Diego',     'USA',       'California'),
+  ('JFK', 'John F. Kennedy Intl','New York',         'New York',      'USA',       'New York'),
+  ('EWR', 'Newark Liberty Intl', 'New York',         'Newark',        'USA',       'New York'),
+  ('ORD', 'O''Hare Intl',        'Illinois',         'Chicago',       'USA',       'Illinois'),
+  ('MIA', 'Miami Intl',          'Florida',          'Miami',         'USA',       'Florida'),
+  ('SEA', 'Seattle-Tacoma Intl', 'Washington',       'Seattle',       'USA',       'Washington'),
+  ('BOS', 'Logan Intl',          'Massachusetts',    'Boston',        'USA',       'Massachusetts'),
+  ('LHR', 'Heathrow',            'England',          'London',        'UK',        'England'),
+  ('CDG', 'Charles de Gaulle',   'Île-de-France',    'Paris',         'France',    'Île-de-France'),
+  ('FCO', 'Fiumicino',           'Lazio',            'Rome',          'Italy',     'Lazio'),
+  ('BCN', 'El Prat',             'Catalonia',        'Barcelona',     'Spain',     'Catalonia'),
+  ('HND', 'Haneda',              'Kanto',            'Tokyo',         'Japan',     'Kanto'),
+  ('SIN', 'Changi',              'Singapore',        'Singapore',     'Singapore', 'Singapore'),
+  ('DXB', 'Dubai Intl',          'Dubai',            'Dubai',         'UAE',       'Dubai'),
+  ('SYD', 'Kingsford Smith',     'New South Wales',  'Sydney',        'Australia', 'New South Wales')
+ON CONFLICT (code) DO NOTHING;
+
+-- ==============================================================
+-- Airline seed data
+-- ==============================================================
+
+INSERT INTO airline (code, name)
+SELECT 'KA', 'KimAir'         WHERE NOT EXISTS (SELECT 1 FROM airline WHERE code = 'KA');
+INSERT INTO airline (code, name)
+SELECT 'VA', 'VegaAir'        WHERE NOT EXISTS (SELECT 1 FROM airline WHERE code = 'VA');
+INSERT INTO airline (code, name)
+SELECT 'NA', 'Nova Air'        WHERE NOT EXISTS (SELECT 1 FROM airline WHERE code = 'NA');
+INSERT INTO airline (code, name)
+SELECT 'PL', 'Polaris Airways' WHERE NOT EXISTS (SELECT 1 FROM airline WHERE code = 'PL');
+INSERT INTO airline (code, name)
+SELECT 'HA', 'Helio Airlines'  WHERE NOT EXISTS (SELECT 1 FROM airline WHERE code = 'HA');
+
+-- ==============================================================
+-- Aircraft seed data (PK = name)
+-- ==============================================================
 
 INSERT INTO aircraft (name, manufacturer, seat_capacity)
 VALUES
-('Boeing 737-800', 'Boeing', 189),
-('Airbus A320', 'Airbus', 180),
-('Boeing 787-9', 'Boeing', 296)
+  ('Boeing 787-9',   'Boeing',  296),
+  ('Boeing 777-300', 'Boeing',  396),
+  ('Airbus A350-900','Airbus',  315),
+  ('Airbus A321neo', 'Airbus',  194),
+  ('Boeing 737 MAX', 'Boeing',  178),
+  ('Airbus A380-800','Airbus',  555)
 ON CONFLICT (name) DO NOTHING;
 
--- ==========================================
--- AIRLINES
--- ==========================================
+-- ==============================================================
+-- Flight seed data — popular routes, next 60 days, ~3 per day
+-- Departure times spread: 07:00, 13:00, 20:00
+-- Duration and distance are realistic approximations.
+-- airline_id is resolved via a sub-select so this is resilient
+-- to IDENTITY sequence gaps across restarts.
+-- ==============================================================
 
-INSERT INTO airline (id, code, name)
-VALUES
-(1, 'AA', 'American Airlines'),
-(2, 'DL', 'Delta Airlines'),
-(3, 'UA', 'United Airlines')
+-- Helper: resolves airline id by name
+-- JFK → CDG  (7h 30m = 450 min, ~5 840 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-JFK-CDG-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '7 hours',  d + INTERVAL '14 hours 30 minutes', 5840, 450, 'SCHEDULED', 'Boeing 787-9',   (SELECT id FROM airline WHERE code='KA'), 'JFK', 'CDG' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
+ON CONFLICT (id) DO NOTHING;
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-JFK-CDG-' || TO_CHAR(d, 'YYYYMMDD') || '-2', d + INTERVAL '13 hours', d + INTERVAL '20 hours 30 minutes', 5840, 450, 'SCHEDULED', 'Airbus A350-900', (SELECT id FROM airline WHERE code='VA'), 'JFK', 'CDG' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
+ON CONFLICT (id) DO NOTHING;
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-JFK-CDG-' || TO_CHAR(d, 'YYYYMMDD') || '-3', d + INTERVAL '20 hours', d + INTERVAL '27 hours 30 minutes', 5840, 450, 'SCHEDULED', 'Boeing 777-300',  (SELECT id FROM airline WHERE code='PL'), 'JFK', 'CDG' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
 ON CONFLICT (id) DO NOTHING;
 
--- ==========================================
--- AIRPORTS
--- ==========================================
-
-INSERT INTO airport (code, address_id)
-VALUES
-('JFK', 'ADDR-JFK'),
-('LAX', 'ADDR-LAX'),
-('ORD', 'ADDR-ORD'),
-('DFW', 'ADDR-DFW')
-ON CONFLICT (code) DO NOTHING;
-
--- ==========================================
--- FLIGHTS
--- ==========================================
-
-INSERT INTO flight (
-    id,
-    departure_date,
-    arrival_date,
-    distance,
-    estimated_time_in_minutes,
-    flight_status,
-    aircraft_name,
-    airline_id,
-    origin_airport_code,
-    destination_airport_code
-)
-VALUES
-(
-    'AA101',
-    '2026-07-01 08:00:00',
-    '2026-07-01 11:30:00',
-    2475,
-    210,
-    'SCHEDULED',
-    'Boeing 737-800',
-    1,
-    'JFK',
-    'LAX'
-),
-(
-    'DL202',
-    '2026-07-02 09:15:00',
-    '2026-07-02 12:00:00',
-    1180,
-    165,
-    'BOARDING',
-    'Airbus A320',
-    2,
-    'ORD',
-    'DFW'
-),
-(
-    'UA303',
-    '2026-07-03 13:00:00',
-    '2026-07-03 18:30:00',
-    3983,
-    330,
-    'SCHEDULED',
-    'Boeing 787-9',
-    3,
-    'LAX',
-    'JFK'
-)
+-- JFK → LHR  (7h = 420 min, ~5 570 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-JFK-LHR-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '8 hours',  d + INTERVAL '15 hours', 5570, 420, 'SCHEDULED', 'Boeing 787-9',   (SELECT id FROM airline WHERE code='KA'), 'JFK', 'LHR' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
+ON CONFLICT (id) DO NOTHING;
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-JFK-LHR-' || TO_CHAR(d, 'YYYYMMDD') || '-2', d + INTERVAL '22 hours', d + INTERVAL '29 hours', 5570, 420, 'SCHEDULED', 'Airbus A380-800', (SELECT id FROM airline WHERE code='HA'), 'JFK', 'LHR' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
 ON CONFLICT (id) DO NOTHING;
 
--- ==========================================
--- BOOKINGS
--- ==========================================
-
-INSERT INTO booking (
-    booking_reference,
-    reserved_date,
-    status
-)
-VALUES
-('BK-10001', '2026-06-15', 'CONFIRMED'),
-('BK-10002', '2026-06-16', 'PENDING_PAYMENT'),
-('BK-10003', '2026-06-17', 'CHECKED_IN')
-ON CONFLICT (booking_reference) DO NOTHING;
-
--- ==========================================
--- PASSENGERS
--- ==========================================
-
-INSERT INTO passenger (
-    id,
-    name,
-    passport_number,
-    booking_reference,
-    street,
-    city,
-    state,
-    country,
-    postal_code
-)
-VALUES
-(
-    '11111111-1111-1111-1111-111111111111',
-    'John Smith',
-    'P1234567',
-    'BK-10001',
-    '123 Main Street',
-    'New York',
-    'NY',
-    'USA',
-    '10001'
-),
-(
-    '22222222-2222-2222-2222-222222222222',
-    'Sarah Johnson',
-    'P2345678',
-    'BK-10002',
-    '456 Oak Avenue',
-    'Chicago',
-    'IL',
-    'USA',
-    '60601'
-),
-(
-    '33333333-3333-3333-3333-333333333333',
-    'Michael Brown',
-    'P3456789',
-    'BK-10003',
-    '789 Sunset Blvd',
-    'Los Angeles',
-    'CA',
-    'USA',
-    '90001'
-)
+-- LAX → HND  (11h = 660 min, ~8 750 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-LAX-HND-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '10 hours', d + INTERVAL '21 hours', 8750, 660, 'SCHEDULED', 'Boeing 787-9',    (SELECT id FROM airline WHERE code='NA'), 'LAX', 'HND' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
+ON CONFLICT (id) DO NOTHING;
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-LAX-HND-' || TO_CHAR(d, 'YYYYMMDD') || '-2', d + INTERVAL '22 hours', d + INTERVAL '33 hours', 8750, 660, 'SCHEDULED', 'Airbus A350-900', (SELECT id FROM airline WHERE code='PL'), 'LAX', 'HND' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
 ON CONFLICT (id) DO NOTHING;
 
--- ==========================================
--- TICKETS
--- ==========================================
-
-INSERT INTO ticket (
-    ticket_code,
-    availability,
-    flight_id,
-    price,
-    type,
-    passenger_id
-)
-VALUES
-(
-    'TKT-001',
-    'RESERVED',
-    'AA101',
-    450.00,
-    'ECONOMY',
-    '11111111-1111-1111-1111-111111111111'
-),
-(
-    'TKT-002',
-    'AVAILABLE',
-    'DL202',
-    320.00,
-    'ECONOMY',
-    '22222222-2222-2222-2222-222222222222'
-),
-(
-    'TKT-003',
-    'RESERVED',
-    'UA303',
-    850.00,
-    'BUSINESS',
-    '33333333-3333-3333-3333-333333333333'
-)
-ON CONFLICT (ticket_code) DO NOTHING;
-
--- ==========================================
--- LUGGAGE
--- ==========================================
-
-INSERT INTO luggage (
-    id,
-    weight,
-    type,
-    price,
-    passenger_id
-)
-VALUES
-(
-    1,
-    23.50,
-    'CHECKED',
-    50.00,
-    '11111111-1111-1111-1111-111111111111'
-),
-(
-    2,
-    10.00,
-    'CARRY_ON',
-    0.00,
-    '22222222-2222-2222-2222-222222222222'
-),
-(
-    3,
-    28.00,
-    'CHECKED',
-    75.00,
-    '33333333-3333-3333-3333-333333333333'
-)
+-- LAX → LHR  (10h 30m = 630 min, ~8 760 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-LAX-LHR-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '9 hours',  d + INTERVAL '19 hours 30 minutes', 8760, 630, 'SCHEDULED', 'Boeing 777-300',  (SELECT id FROM airline WHERE code='KA'), 'LAX', 'LHR' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
+ON CONFLICT (id) DO NOTHING;
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-LAX-LHR-' || TO_CHAR(d, 'YYYYMMDD') || '-2', d + INTERVAL '19 hours', d + INTERVAL '29 hours 30 minutes', 8760, 630, 'SCHEDULED', 'Airbus A380-800', (SELECT id FROM airline WHERE code='VA'), 'LAX', 'LHR' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
 ON CONFLICT (id) DO NOTHING;
 
--- ==========================================
--- INVOICES
--- ==========================================
-
-INSERT INTO invoice (
-    id,
-    booking_id,
-    cost,
-    created_at,
-    payment_method,
-    status
-)
-VALUES
-(
-    1,
-    'BK-10001',
-    500.00,
-    '2026-06-15 10:00:00',
-    'VISA',
-    'COMPLETED'
-),
-(
-    2,
-    'BK-10002',
-    320.00,
-    '2026-06-16 11:15:00',
-    'MASTERCARD',
-    'PENDING'
-)
+-- MIA → CDG  (9h 30m = 570 min, ~7 570 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-MIA-CDG-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '21 hours', d + INTERVAL '30 hours 30 minutes', 7570, 570, 'SCHEDULED', 'Boeing 787-9',   (SELECT id FROM airline WHERE code='HA'), 'MIA', 'CDG' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
 ON CONFLICT (id) DO NOTHING;
 
--- ==========================================
--- TRANSACTIONS
--- ==========================================
-
-INSERT INTO transaction (
-    id,
-    card_number,
-    brand,
-    amount,
-    status,
-    failure_reason,
-    created_at
-)
-VALUES
-(
-    1,
-    '4111111111111111',
-    'VISA',
-    500.00,
-    'SUCCESS',
-    NULL,
-    '2026-06-15 10:01:00'
-),
-(
-    2,
-    '5555555555554444',
-    'MASTERCARD',
-    320.00,
-    'FAILED',
-    'INSUFFICIENT_FUNDS',
-    '2026-06-16 11:20:00'
-)
+-- LAX → SYD  (14h 30m = 870 min, ~12 080 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-LAX-SYD-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '22 hours', d + INTERVAL '36 hours 30 minutes', 12080, 870, 'SCHEDULED', 'Airbus A380-800', (SELECT id FROM airline WHERE code='KA'), 'LAX', 'SYD' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
 ON CONFLICT (id) DO NOTHING;
 
--- ==========================================
--- USERS
--- Password = password
--- BCrypt hash:
--- $2a$10$DowJonesIndexExampleHashReplaceMe
--- ==========================================
+-- ORD → LHR  (8h = 480 min, ~6 350 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-ORD-LHR-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '17 hours', d + INTERVAL '25 hours', 6350, 480, 'SCHEDULED', 'Boeing 787-9',   (SELECT id FROM airline WHERE code='VA'), 'ORD', 'LHR' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
+ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO users (
-    id,
-    username,
-    password,
-    first_name,
-    last_name,
-    status,
-    role
-)
-VALUES
-(
-    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-    'admin',
-    '$2a$10$7EqJtq98hPqEX7fNZaFWoOHiYtQjF9zQ0lN5xRcbk6VwBEm90LkK2',
-    'System',
-    'Admin',
-    'ACTIVE',
-    'ROLE_ADMIN'
-),
-(
-    'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
-    'user',
-    '$2a$10$7EqJtq98hPqEX7fNZaFWoOHiYtQjF9zQ0lN5xRcbk6VwBEm90LkK2',
-    'Regular',
-    'User',
-    'ACTIVE',
-    'ROLE_USER'
-)
+-- BOS → CDG  (7h = 420 min, ~5 560 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-BOS-CDG-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '18 hours', d + INTERVAL '25 hours', 5560, 420, 'SCHEDULED', 'Airbus A350-900', (SELECT id FROM airline WHERE code='NA'), 'BOS', 'CDG' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
+ON CONFLICT (id) DO NOTHING;
+
+-- SFO → HND  (10h 30m = 630 min, ~8 280 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-SFO-HND-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '11 hours', d + INTERVAL '21 hours 30 minutes', 8280, 630, 'SCHEDULED', 'Boeing 787-9',    (SELECT id FROM airline WHERE code='PL'), 'SFO', 'HND' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
+ON CONFLICT (id) DO NOTHING;
+
+-- JFK → SIN  (18h 40m = 1120 min, ~15 350 km)
+INSERT INTO flight (id, departure_date, arrival_date, distance, estimated_time_in_minutes, flight_status, aircraft_name, airline_id, origin_airport_code, destination_airport_code)
+SELECT 'FL-JFK-SIN-' || TO_CHAR(d, 'YYYYMMDD') || '-1', d + INTERVAL '10 hours', d + INTERVAL '28 hours 40 minutes', 15350, 1120, 'SCHEDULED', 'Airbus A350-900', (SELECT id FROM airline WHERE code='KA'), 'JFK', 'SIN' FROM generate_series(CURRENT_DATE, CURRENT_DATE + INTERVAL '60 days', '1 day') AS d
 ON CONFLICT (id) DO NOTHING;

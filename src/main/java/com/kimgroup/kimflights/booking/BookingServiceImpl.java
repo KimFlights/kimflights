@@ -11,6 +11,8 @@ import com.kimgroup.kimflights.booking.util.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final com.kimgroup.kimflights.booking.repository.TicketRepository ticketRepository;
     private final BookingReferenceGenerator referenceGenerator;
 
     private final BookingValidationService validationService;
@@ -38,6 +41,11 @@ public class BookingServiceImpl implements BookingService {
         } while (bookingRepository.existsById(reference));
 
         Booking booking = domainService.createNewBooking(reference);
+        
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
+            booking.setUsername(authentication.getName());
+        }
 
         for (PassengerDTO p : request.passengers()) {
 
@@ -56,7 +64,8 @@ public class BookingServiceImpl implements BookingService {
                             t.type(),
                             t.price(),
                             t.availability(),
-                            t.flightId()
+                            t.flightId(),
+                            t.seatNum()
                     );
 
                     passenger.addTicket(ticket);
@@ -153,6 +162,25 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new BookingNotFoundException(bookingReference));
 
         return toResponse(booking);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookingResponse> getUserBookings(String username) {
+        return bookingRepository.findByUsername(username)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> getOccupiedSeats(String flightId) {
+        return ticketRepository.findByFlightId(flightId)
+                .stream()
+                .map(Ticket::getSeatNum)
+                .filter(seatNum -> seatNum != null && !seatNum.equals("UNASSIGNED") && !seatNum.trim().isEmpty())
+                .toList();
     }
     
     // ---------------- HELPERS ----------------
